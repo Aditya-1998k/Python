@@ -1,3 +1,4 @@
+# Multiprocessing
 Python's GIL prevents `multiple threads` from executing bytecode simultnously.
 For `CPU bound` tasks (Heavey computation), threading does not help.
 Eg: Heavy computation, Image Processing, ML Training etc
