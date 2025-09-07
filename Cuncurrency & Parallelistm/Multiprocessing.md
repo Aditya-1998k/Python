@@ -90,7 +90,7 @@ if __name__ == "__main__":
 Since each process have different memory, so sharing data between each other is difficult.
 We have several ways to do the inter process communication.
 
-1. Using `Queue`
+#### 1. Using `Queue`
 ```python
 from multiprocessing import Process, Queue
 
@@ -119,7 +119,7 @@ Again if you try to do `q.get()`
 `q.get()` will block forever, waiting for new data that never comes.
 So you should do same number of q.get() as number of q.put() done.
 
-2. Using `Pipe`
+#### 2. Using `Pipe`
 Provides two connection objects for two-way communication.
 
 ```python
@@ -140,3 +140,55 @@ Output:
 ```
 Hello from child
 ```
+
+#### 3. Using `Manager`
+Provides a way to share Python objects across processes.
+
+```python
+from multiprocessing import Process, Manager
+
+def worker(d, key,  value):
+    d[key] = value
+
+if __name__ == "__main__":
+    with Manager() as manager:
+        shared_dict = manager.dict()
+        processes = [Process(target=worker, args=(shared_dict, i, i*i)) for i in range(5)]
+
+        for p in processes: p.start()
+        for p in processes: p.join()
+
+        print(shared_dict)
+```
+Output:
+```
+{0: 0, 1: 1, 3: 9, 2: 4, 4: 16}
+```
+
+### Synchronization in Multiprocessing
+In multiprocessing, each process has its own memory space, so usually no race condition in normal variables.
+Sometime just like in threads, processes may also needs locks. If some variable is shared across processes.
+
+```python
+from multiprocessing import Process, Lock
+
+def worker(lock, i):
+    with lock:
+        print(f"Process {i} is working")
+
+if __name__ == "__main__":
+    lock = Lock()
+    processes = [Process(target=worker, args=(lock, i)) for i in range(5)]
+
+    for p in processes: p.start()
+    for p in processes: p.join()
+```
+Output:
+```
+Process 1 is working
+Process 0 is working
+Process 3 is working
+Process 2 is working
+Process 4 is working
+```
+OS decides scheduling, so order changes each run.
