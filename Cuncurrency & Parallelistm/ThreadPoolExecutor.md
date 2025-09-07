@@ -23,8 +23,7 @@ from concurrent.futures import ThreadPoolExecutor
 import time
 
 def task(n):
-    print(f"Task {n} starting...")
-    time.sleep(2)
+    time.sleep(n)
     return f"Task {n} done"
 
 with ThreadPoolExecutor(max_workers=3) as executor:
@@ -33,3 +32,8 @@ with ThreadPoolExecutor(max_workers=3) as executor:
     for f in futures:
         print(f.result()) # Waits unitll result is not ready
 ```
+
+executor.submit(func, *args) schedules a function to run in a thread.
+Returns a Future object.
+
+
