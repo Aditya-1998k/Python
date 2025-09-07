@@ -37,4 +37,45 @@ Only say_hello is registered.
 At await asyncio.sleep(5), the event loop has nothing else scheduled, so it just idles.
 `Hello Outside coroutines` is outside the event loop, so it only runs after the loop finishes.
 
+#### Running Multiple Task (Using asyncio.gather)
+```python
+import asyncio
+
+async def task(name, delay):
+    print(f"{name} started")
+    await asyncio.sleep(delay)     # non-blocking, lets event loop run other tasks
+    print(f"{name} finished after {delay}s")
+    return f"{name} result"
+
+async def main():
+    results = await asyncio.gather(
+        task("Task1", 2),
+        task("Task2", 1),
+        task("Task3", 3)
+    )
+    print("Results:", results)
+
+asyncio.run(main())
+# Starts the event loop.
+# Runs main() until completion.
+```
+
+Defines an async coroutine task.
+Each task simulates some I/O by sleeping for delay seconds.
+`await asyncio.sleep(delay)` does not block → it pauses this coroutine and allows other tasks to run on the event loop.
+
+`asyncio.gather()` runs all provided tasks concurrently.
+Each `task(...)` is a coroutine, and `gather` schedules them on the event loop.
+`await asyncio.gather(...)` waits until all tasks finish and returns a list of results in the same order as passed.
+
+Output:
+```
+Task1 started
+Task2 started
+Task3 started
+Task2 finished after 1s
+Task1 finished after 2s
+Task3 finished after 3s
+Results: ['Task1 result', 'Task2 result', 'Task3 result']
+```
 
