@@ -7,30 +7,30 @@ In python, provided by socket module.
 
 Note: Worked at low level as compared to HTTP library  like requests.
 
+**Why TCP or UDP called low level Network communication?**
+
+TCP and UDP are called low-level networking protocols because:
+
+Networking has layers (OSI model):
 ```
-+------------------+                    +------------------+
-|   Client App     |                    |   Server App     |
-|  (Python code)   |                    |  (Python code)   |
-+------------------+                    +------------------+
-         |                                       |
-         |  socket()                             |  socket()
-         |-------------------------------------->|
-         |           connect()                   |
-         |-------------------------------------->|
-         |                                       |  bind(), listen()
-         |                                       |  accept()
-         |<--------------------------------------|
-         |         TCP Connection Established     |
-         |                                       |
-         |  send("Hello")                        |
-         |-------------------------------------->|
-         |                                       |  recv("Hello")
-         |                                       |
-         |                Data Flow              |
-         |                                       |
-         |  close()                              |  close()
-         |-------------------------------------->|
+7. Application   → HTTP, FTP, DNS
+6. Presentation  → encryption, compression
+5. Session       → managing sessions
+4. Transport     → TCP, UDP   ✅
+3. Network       → IP
+2. Data Link     → Ethernet, WiFi
+1. Physical      → cables, radio waves
 ```
+TCP & UDP live at the Transport Layer (Layer 4). They are just above IP and deal with raw data 
+delivery between two endpoints. They don’t understand high-level things like web pages or REST APIs.
+
+**Why “Low-Level”?**
+They work with raw bytes (no JSON, no HTML, no HTTP headers).
+Programmer must handle:
+1. Message encoding/decoding.
+2. Splitting/reassembling messages (especially with TCP streams).
+3. Reliability (for UDP).
+By contrast, high-level protocols like HTTP, gRPC, MQTT build on top of TCP/UDP and provide more abstraction.
 
 ---
 
@@ -152,4 +152,33 @@ Send data back to the client.
 .sendall() ensures all data is sent (TCP guarantees reliability).
 This makes your server behave like an echo server.
 ```
+
+
+```
++------------------+                    +------------------+
+|   Client App     |                    |   Server App     |
+|  (Python code)   |                    |  (Python code)   |
++------------------+                    +------------------+
+         |                                       |
+         |  socket()                             |  socket()
+         |-------------------------------------->|
+         |           connect()                   |
+         |-------------------------------------->|
+         |                                       |  bind(), listen()
+         |                                       |  accept()
+         |<--------------------------------------|
+         |         TCP Connection Established     |
+         |                                       |
+         |  send("Hello")                        |
+         |-------------------------------------->|
+         |                                       |  recv("Hello")
+         |                                       |
+         |                Data Flow              |
+         |                                       |
+         |  close()                              |  close()
+         |-------------------------------------->|
+```
+
 ---
+
+## UDP (User Datagram Protocol)
