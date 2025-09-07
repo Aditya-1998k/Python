@@ -32,7 +32,9 @@ Note: Worked at low level as compared to HTTP library  like requests.
          |-------------------------------------->|
 ```
 
-### TCP 
+---
+
+## TCP 
 Transmission control protocol is a communication protocol that:
 1. Ensures reliable, ordered and error-checked delievery of data
 2. Connection oriented - Both client and server first establish the connection before exchanging the data
@@ -99,3 +101,5 @@ Output on server.py terminal
 Connected by ('127.0.0.1', 47794)
 Received: Hello TCP Server
 ```
+
+---
