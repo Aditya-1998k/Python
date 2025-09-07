@@ -66,5 +66,52 @@ Finished in 2 sec
 Finished in 3 sec
 ```
 
+#### Using map()
+Map will execute in parallel but always produce result in order. As it maintains input orders.
+```python
+from concurrent.futures import ThreadPoolExecutor
+import time
+
+def square(n):
+    time.sleep(1)
+    return n * n
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    results = executor.map(square, [5,2,3,4,1])
+    print(list(results))
+```
+Output:
+```
+[25, 4, 9, 16, 1]
+```
+
+#### Handling Exception
+If task raises exception, it is stored inside the `Future` objects.
+```python
+from concurrent.futures import ThreadPoolExecutor
+
+def divide(x, y):
+    return x / y
+
+with ThreadPoolExecutor() as executor:
+    futures = [
+        executor.submit(divide, 10, 2),
+        executor.submit(divide, 5, 0)  # division by zero
+    ]
+
+    for f in futures:
+        try:
+            print(f.result())
+        except Exception as e:
+            print("Error:", e)
+```
+Output:
+```
+ERROR!
+5.0
+Error: division by zero
+```
+
+#### Cancelling Tasks
 
 
