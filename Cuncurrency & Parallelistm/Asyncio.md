@@ -127,3 +127,40 @@ Downloaded 2
 Downloaded 3
 ```
 
+#### Mixing sync and Async
+asyncio runs on one thread (event loop).
+If you call a blocking function (like time.sleep(2)), the whole loop freezes → no other coroutine can run.
+```python
+import asyncio, time
+
+def blocking_task():
+    time.sleep(2)              # <-- blocks the thread
+    return "Done (blocking)"
+```
+above blocking_task function is sync function. It can freeze whole loop.
+
+```python
+async def main():
+    print("Start async")
+    result = await asyncio.to_thread(blocking_task)
+    print(result)
+```
+`asyncio.to_thread(blocking_task)`
+1. Runs blocking_task in a separate thread, using the default thread pool.
+2. Returns an awaitable (a coroutine), so you can await it.
+3. While it runs, the event loop is free to handle other async tasks.
+
+`await asyncio.to_thread(...)`
+1. Suspends main() until the blocking task finishes.
+2. Meanwhile, other coroutines (if any) can continue running.
+
+```python
+asyncio.run(main())
+```
+Starts the event loop and runs main.
+
+Output:
+```
+Start async
+Done (blocking)
+```
