@@ -48,3 +48,32 @@ Process 4 doneProcess 3 done
 All processes finished
 ```
 Note: Each task runs in a separate process (different PID).
+
+#### Process Pool
+Simplifies managing multiple processes.
+
+```python
+from multiprocessing import Pool
+import time
+
+def squere(n):
+    time.sleep(n)
+    return n*n
+
+if __name__ == "__main__":
+    with Pool(processes=3) as pool:
+        results = pool.map(squere, [3,1,2])
+        print(results)
+```
+Output:
+```
+[9, 1, 4]
+```
+map() → distributes tasks, preserves input order.
+
+#### Asynchronous Execution with `apply_sync`
+apply_async() → submit tasks asynchronously.
+
+```python
+
+```
