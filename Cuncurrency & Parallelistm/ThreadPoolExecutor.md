@@ -113,7 +113,7 @@ Error: division by zero
 ```
 
 #### Cancelling Tasks
-future.cancel() works only if the task has not started yet.
+`future.cancel()` works only if the task has not started yet.
 If already running, cancellation fails.
 
 ```python
@@ -141,4 +141,19 @@ Here Since we have 2 workers which will take first two task and start processing
 Hence those task will not cancel, but other two task, which submitted not started yet since
 workers are busy processing other task, so those will be cancelled.
 
+#### Shutting down the Pool
+- The with statement automatically calls `executor.shutdown(wait=True)`.
+- `shutdown(wait=False)` → allows main thread to exit without waiting for tasks.
+
+```python
+executor.shutdown(wait=True)   # default, waits for tasks
+executor.shutdown(wait=False)  # don’t wait
+```
+
+Summary:
+1. `submit()` → run a function, returns Future.
+2. `map()` → parallel map, ordered results.
+3. `as_completed()` → process results as soon as ready.
+4. Exceptions are raised when you call `future.result()`.
+5. `Locks` are still needed if threads modify shared data.
 
