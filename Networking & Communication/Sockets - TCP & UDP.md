@@ -102,4 +102,54 @@ Connected by ('127.0.0.1', 47794)
 Received: Hello TCP Server
 ```
 
+Expalaination:
+
+```
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+socket.AF_INET → means we’re using IPv4 addresses (localhost, 127.0.0.1, etc.).
+socket.SOCK_STREAM → means we’re using TCP protocol (reliable, connection-oriented).
+```
+
+```
+server_socket.bind(("localhost", 12345))
+
+Attach the socket to IP + port:
+"localhost" = only accept connections from your own computer.
+12345 = the port number (must be free).
+If another process is already using this port, you’ll see:
+OSError: [Errno 98] Address already in use.
+```
+
+```
+server_socket.listen()
+
+Put the socket into listening mode, meaning it will wait for clients to connect.
+By default, it allows a backlog (queue) of 5 pending connections.
+```
+
+```
+conn, addr = server_socket.accept()
+
+Blocking call → The program pauses here until a client connects.
+conn = a new socket object for communicating with that client.
+addr = client’s address (('127.0.0.1', some_random_port)).
+So now your server can talk only with that client.
+```
+
+```
+data = conn.recv(1024).decode()
+
+Receive up to 1024 bytes of data from client.
+.recv() returns bytes → .decode() converts it to string.
+```
+
+```
+conn.sendall(f"Echo: {data}".encode())
+
+Send data back to the client.
+.encode() converts string → bytes.
+.sendall() ensures all data is sent (TCP guarantees reliability).
+This makes your server behave like an echo server.
+```
 ---
