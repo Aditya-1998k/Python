@@ -85,13 +85,45 @@ import asyncio
 
 async def worker(n):
     print(f"Worker {n} started")
-    await asyncio.sleep(2)
+    await asyncio.sleep(n)
     print(f"Worker {n} finished")
 
 async def main():
-    tasks = [asyncio.create_task(worker(i)) for i in range(3)]
+    tasks = [asyncio.create_task(worker(i)) for i in [1,3,2]]
     await asyncio.gather(*tasks)
 
 asyncio.run(main())
+```
+Output:
+```
+Worker 1 started
+Worker 3 started
+Worker 2 started
+Worker 1 finished
+Worker 2 finished
+Worker 3 finished
+```
+
+#### Awaiting as They Complete
+```python
+import asyncio
+
+async def download(n):
+    await asyncio.sleep(n)
+    return f"Downloaded {n}"
+
+async def main():
+    tasks = [asyncio.create_task(download(i)) for i in [3, 1, 2]]
+    for task in asyncio.as_completed(tasks):
+        result = await task
+        print(result)
+
+asyncio.run(main())
+```
+Output:
+```
+Downloaded 1
+Downloaded 2
+Downloaded 3
 ```
 
