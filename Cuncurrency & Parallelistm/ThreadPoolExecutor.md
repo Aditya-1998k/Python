@@ -113,5 +113,32 @@ Error: division by zero
 ```
 
 #### Cancelling Tasks
+future.cancel() works only if the task has not started yet.
+If already running, cancellation fails.
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+import time
+
+def work():
+    time.sleep(3)
+    return "done"
+
+with ThreadPoolExecutor(max_workers=2) as executor:
+    for _ in range(4):
+        future = executor.submit(work)
+        cancelled = future.cancel()
+        print("Cancelled:", cancelled)
+```
+Output:
+```
+Cancelled: False
+Cancelled: False
+Cancelled: True
+Cancelled: True
+```
+Here Since we have 2 workers which will take first two task and start processing immediately.
+Hence those task will not cancel, but other two task, which submitted not started yet since
+workers are busy processing other task, so those will be cancelled.
 
 
