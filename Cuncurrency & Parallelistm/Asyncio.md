@@ -79,3 +79,19 @@ Task3 finished after 3s
 Results: ['Task1 result', 'Task2 result', 'Task3 result']
 ```
 
+#### Creating Tasks Explicitly
+```python
+import asyncio
+
+async def worker(n):
+    print(f"Worker {n} started")
+    await asyncio.sleep(2)
+    print(f"Worker {n} finished")
+
+async def main():
+    tasks = [asyncio.create_task(worker(i)) for i in range(3)]
+    await asyncio.gather(*tasks)
+
+asyncio.run(main())
+```
+
