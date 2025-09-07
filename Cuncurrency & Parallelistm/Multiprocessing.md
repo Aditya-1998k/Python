@@ -71,9 +71,72 @@ Output:
 ```
 map() → distributes tasks, preserves input order.
 
-#### Asynchronous Execution with `apply_sync`
+#### Asynchronous Execution with `apply_async`
 apply_async() → submit tasks asynchronously.
 
 ```python
+from multiprocessing import Pool
 
+def cube(n):
+    return n*n*n
+
+if __name__ == "__main__":
+    with Pool(3) as pool:
+        result = pool.apply_async(cube, (4,))  # Async call
+        print("Result: ", result.get())        # Wait and fetch result
+```
+
+## Inter-Process Communication (IPC)
+Since each process have different memory, so sharing data between each other is difficult.
+We have several ways to do the inter process communication.
+
+1. Using `Queue`
+```python
+from multiprocessing import Process, Queue
+
+def worker(q, x):
+    # putting result in queue
+    q.put(x*x)
+
+if __name__ == "__main__":
+    # A multiprocessing-safe queue is created.
+    # This is used for inter-process communication.
+    q = Queue()
+    processes = [Process(target=worker, args=(q,i)) for i in range(5)]
+
+    for p in processes: p.start()
+    for p in processes: p.join()
+
+    results = [q.get() for _ in range(5)]
+    print("Results:", results)
+```
+So the queue will eventually hold: 0, 1, 4, 9, 16 (order not guaranteed).
+```
+Results: [0, 1, 4, 9, 16]
+```
+Again if you try to do `q.get()`
+⚠️ At this point, the queue is empty!. 
+`q.get()` will block forever, waiting for new data that never comes.
+So you should do same number of q.get() as number of q.put() done.
+
+2. Using `Pipe`
+Provides two connection objects for two-way communication.
+
+```python
+from multiprocessing import Process, Pipe
+
+def worker(conn):
+    conn.send("Hello from child")
+    conn.close()
+
+if __name__ == "__main__":
+    parent_conn, child_conn = Pipe()
+    p = Process(target=worker, args=(child_conn,))
+    p.start()
+    print(parent_conn.recv()) # Recieve message from child conn
+    p.join()
+```
+Output:
+```
+Hello from child
 ```
