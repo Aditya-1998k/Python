@@ -17,7 +17,7 @@ executor = ThreadPoolExecutor(max_workers=3)
 - max_workers → number of threads in the pool.
 - If omitted, defaults to min(32, os.cpu_count() + 4).
 
-**Submitting Tasks with submit()**
+#### Submitting Tasks with submit()
 ```python
 from concurrent.futures import ThreadPoolExecutor
 import time
@@ -27,7 +27,7 @@ def task(n):
     return f"Task {n} done"
 
 with ThreadPoolExecutor(max_workers=3) as executor:
-    futures = [executor.submit(task, i) for i in range(5)]
+    futures = [executor.submit(task, i) for i in [3,2,1]]
 
     for f in futures:
         print(f.result()) # Waits unitll result is not ready
@@ -35,5 +35,36 @@ with ThreadPoolExecutor(max_workers=3) as executor:
 
 executor.submit(func, *args) schedules a function to run in a thread.
 Returns a Future object.
+It will wait till result is not ready. And produce result in order.
+```
+Task 3 done
+Task 2 done
+Task 1 done
+```
+
+#### Using as_completed()
+`as_completed()` lets you process results as soon as tasks finish (instead of waiting in order).
+
+```python
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
+
+def task(n):
+    time.sleep(n)
+    return f"Finished in {n} sec"
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    futures = [executor.submit(task, i) for i in [3,1,2]]
+
+    for f in as_completed(futures):
+        print(f.result())
+```
+Output:
+```
+Finished in 1 sec
+Finished in 2 sec
+Finished in 3 sec
+```
+
 
 
