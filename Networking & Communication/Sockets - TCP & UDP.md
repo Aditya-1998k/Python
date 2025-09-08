@@ -182,3 +182,72 @@ This makes your server behave like an echo server.
 ---
 
 ## UDP (User Datagram Protocol)
+UDP is called connectionless protocol.
+Here:
+1. No Handshake
+2. No gaurantee of delievery
+3. No order
+4. But **very fast**
+
+Useful for:
+1. Streaming audio/video
+2. Online Gaming
+3. DNS queries
+
+Note: A DNS query is a request from a user's device to a Domain Name System (DNS) server to 
+find the numerical IP address associated with a specific domain name.
+
+**Comparison with TCP**
+```
+-------------------------------------------------------------
+     TCP:              |           UDP:
+-------------------------------------------------------------
+ Client ↔ Server       |      Client → Server
+(Handshake, reliable)  |    (No connection, fire & forget)
+```
+
+Basic Example:
+
+**server.py**
+```python
+import socket
+
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_socket.bind(("localhost", 12345))
+
+print("UDP server is listening on port : 12345")
+
+while True:
+         data, addr = server_socket.recvfrom(1024)     # Recieve packet + client address
+         print(f"Recieved from {addr}: {data.decode()}")
+         server_socket.sendto(f"Recieved you Message: {data.decode()}".encode(), addr)
+```
+
+**client.py**
+
+```python
+import socket
+
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+client_socket.sendto(b"Hello UDP server", ("localhost", 12345))
+data, addr = client_socket.recvfrom(1024)
+
+print("server says: ", data.decode())
+
+client_socket.close()
+```
+
+1. Start the server first
+2. Start the client
+
+Output (server.py)
+```
+UDP server is listening on port : 12345
+Recieved from ('127.0.0.1', 52604): Hello UDP server
+```
+
+Output(client.py)
+```
+server says:  Recieved you Message: Hello UDP server
+```
