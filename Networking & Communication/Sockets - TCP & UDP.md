@@ -251,3 +251,44 @@ Output(client.py)
 ```
 server says:  Recieved you Message: Hello UDP server
 ```
+
+Explaination:
+```python
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+AF_INET → IPv4
+SOCK_DGRAM → means UDP socket (datagram-based, connectionless).
+If this were SOCK_STREAM, it would be TCP.
+```
+
+```python
+server_socket.bind(("localhost", 12345))
+
+Attach the socket to IP & port.
+"localhost" = local machine only.
+12345 = port number.
+Now the OS knows: “Anything sent to 127.0.0.1:12345 via UDP goes to this socket.”
+```
+
+```python
+print("UDP Server is listening on port 12345...")
+
+Note: Just a message → But ⚠️ technically, UDP doesn’t “listen” (no connections).
+```
+
+**Why no listen() in UDP?**
+
+Because UDP is connectionless:
+In TCP:
+1. You must listen() → wait for a client → accept() → establish a connection.
+2. Communication happens on that connection (reliable stream).
+
+In UDP:
+1. No connection exists.
+2. Clients just fire off datagrams to the server’s IP:port.
+3. Server just receives them → no handshake, no accept(), no listen().
+
+That’s why your server goes straight to recvfrom() without listen().
+
+TCP = Phone call 📞 (connection established, then talk).
+UDP = Postcard 📮 (send message directly, no setup, may be lost).
