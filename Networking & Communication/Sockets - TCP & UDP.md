@@ -290,5 +290,5 @@ In UDP:
 
 That’s why your server goes straight to recvfrom() without listen().
 
-TCP = Phone call 📞 (connection established, then talk).
-UDP = Postcard 📮 (send message directly, no setup, may be lost).
+- TCP = Phone call 📞 (connection established, then talk).
+- UDP = Postcard 📮 (send message directly, no setup, may be lost).
