@@ -10,6 +10,8 @@
 2. Lets you use ZeroMQ in Python.
 3. Provides Pythonic APIs for sockets, contexts, and messaging patterns.
 
+Installation: `pip install pyzmq`
+
 Conclusion:
 - `ZeroMQ` = the actual technology / engine.
 - `PyZMQ` = Python library that lets you use ZeroMQ.
@@ -30,7 +32,9 @@ Provide advance socket type:
 3. `PUSH/PULL` = Pipeline
 4. `DEALER/ROUTER` = Advance Routing
 
-### REQUEST/REPLY Socket
+---
+
+## 1. REQUEST/REPLY Socket
 **server.py**
 ```python
 import zmq
@@ -41,7 +45,7 @@ socket.bind("tcp://*:5555")
 
 while True:
     msg = socket.recv().decode()
-    print("Recieved:" msg)
+    print("Recieved:", msg)
     socket.send_string(f"Echo: {msg}")
 ```
 
@@ -55,6 +59,52 @@ socket.connect("tcp://localhost:5555")
 
 socket.send_string("Hello ZeroMQ")
 print("Server says: ", socket.recv().decode())
+```
+
+Output (server.py):
+```
+Recieved: Hello ZeroMQ
+```
+Output (client.py)
+```
+Server says:  Echo: Hello ZeroMQ
+```
+---
+
+## 2. Pub/Sub
+Suppose You have server which is publishing news every 2 second to the topic called "news"
+The subscriber which subsribed to the topic "news" will get the messages.
+
+**server.py**
+```python
+import time
+import zmq
+
+context = zmq.Context()
+socket = context.socket(zmq.PUB)
+socket.bind("tcp://*:5556")
+
+while True:
+    topic = "news"
+    message = f"Breaking news at time {time.time}"
+    socket.send_string(f"{topic} {message}")
+    print("Published:", message)
+    time.sleep(2)
+```
+**client.py**
+```python
+import zmq
+
+context = zmq.Context()
+socket = context.socket(zmq.SUB)
+socket.connect("tcp://localhost:5556")
+
+# Subscribe to Topic "news"
+socket.setsockopt_string(zmq.SUBSCRIBE, "news")
+
+while True:
+    message = socket.recv_string()
+    print("Recieved: ", message)
 ```
 
 
