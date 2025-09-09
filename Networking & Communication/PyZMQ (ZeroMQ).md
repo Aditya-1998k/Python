@@ -176,9 +176,48 @@ Recieved: Task 0
 Recieved: Task 1
 Recieved: Task 3
 ```
-
 Output(worker2)
 ```
 Recieved: Task 2
 Recieved: Task 4
 ```
+
+## 4.DEALER / ROUTER (Advanced Routing)
+Used for asynchronous request/reply with identity handling.
+`ROUTER` → like a broker, can talk to many DEALERS.
+`DEALER` → async client, can send/receive without strict lockstep.
+
+**router.py (broker)**
+```python
+import zmq
+
+context = zmq.Context()
+router = context.socket(zmq.ROUTER)
+router.bind("tcp://localhost:5555")
+
+print("Router is ready...")
+
+while True:
+    identity, msg = router.recv_multipart()
+    print(f" From {identity}: {msg.decode()}")
+    router.send_multipart([identity, f"Reply from Broker : Recieved your messages"])
+```
+
+**dealer.py (client)**
+```python
+import zmq
+
+context = zmq.Context()
+dealer = context.socket(zmq.DEALER)
+dealer.identity = b"Client A"
+dealer.connect("tcp://localhost:5555")
+
+dealer.send(b"Hello from client A")
+reply = dealer.recv()
+print("Recieved: ", reply.decode())
+```
+
+Run multiple dealer.py clients with different identities. 
+broker (router) can route messages individually.
+
+
