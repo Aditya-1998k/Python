@@ -106,6 +106,23 @@ while True:
     message = socket.recv_string()
     print("Recieved: ", message)
 ```
+Output (server.py):
+```
+Published: Breaking news at time 1757385573.4737158
+Published: Breaking news at time 1757385575.4761477
+Published: Breaking news at time 1757385577.4784865
+Published: Breaking news at time 1757385579.4808614
+Published: Breaking news at time 1757385581.4827735
+```
+
+Output (client.py):
+```
+Recieved:  news Breaking news at time 1757385573.4737158
+Recieved:  news Breaking news at time 1757385575.4761477
+Recieved:  news Breaking news at time 1757385577.4784865
+Recieved:  news Breaking news at time 1757385579.4808614
+Recieved:  news Breaking news at time 1757385581.4827735
+```
 
 
 
