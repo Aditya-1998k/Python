@@ -220,4 +220,21 @@ print("Recieved: ", reply.decode())
 Run multiple dealer.py clients with different identities. 
 broker (router) can route messages individually.
 
+Output (broker): 
+```
+Router is ready...
+From b'ClientA': Hello from ClientA
+From b'Client B': Hello from ClientB
+From b'ClientA': Hello from ClientA
+From b'ClientA': Hello from ClientA
+From b'Client B': Hello from ClientB
+From b'Client B': Hello from ClientB
+```
 
+Why it is useful?
+1. Works across threads, processes, or machines.
+2. More flexible than RabbitMQ/Kafka (no broker required by default).
+3. Lets you build custom distributed systems (pipelines, brokers, pub/sub, etc.) easily.
+
+**Conclusion**:
+ZeroMQ gives you low-level building blocks to design messaging patterns (queue, pub/sub, broker) without needing a heavy broker like RabbitMQ.
