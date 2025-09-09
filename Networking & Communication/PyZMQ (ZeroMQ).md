@@ -158,3 +158,26 @@ while True:
     print("Recieved:", msg)
 ```
 
+Now Run the worker.py in multiple terminal (running on 2 terminal)
+
+Output(producer)
+```
+Sending: Task 0
+Sending: Task 1
+Sending: Task 2
+Sending: Task 3
+Sending: Task 4
+```
+
+Output (worker1)
+```
+Recieved: Task 0
+Recieved: Task 1
+Recieved: Task 3
+```
+
+Output(worker2)
+```
+Recieved: Task 2
+Recieved: Task 4
+```
