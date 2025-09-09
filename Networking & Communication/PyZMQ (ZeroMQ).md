@@ -158,7 +158,8 @@ while True:
     print("Recieved:", msg)
 ```
 
-Now Run the worker.py in multiple terminal (running on 2 terminal)
+Run python worker.py in multiple terminals, then run python producer.py.
+Tasks will be **distributed across workers**.
 
 Output(producer)
 ```
