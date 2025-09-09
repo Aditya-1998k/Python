@@ -31,8 +31,31 @@ Provide advance socket type:
 4. `DEALER/ROUTER` = Advance Routing
 
 ### REQUEST/REPLY Socket
+**server.py**
+```python
+import zmq
 
+context = zmq.Context()
+socket = context.socket(zmq.REP)   # Reply socket
+socket.bind("tcp://*:5555")
 
+while True:
+    msg = socket.recv().decode()
+    print("Recieved:" msg)
+    socket.send_string(f"Echo: {msg}")
+```
+
+**client.py**
+```python
+import zmq
+
+context = zmq.Context()
+socket = context.socket(zmq.REQ)
+socket.connect("tcp://localhost:5555")
+
+socket.send_string("Hello ZeroMQ")
+print("Server says: ", socket.recv().decode())
+```
 
 
 
