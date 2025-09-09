@@ -124,5 +124,37 @@ Recieved:  news Breaking news at time 1757385579.4808614
 Recieved:  news Breaking news at time 1757385581.4827735
 ```
 
+## 3. PUSH/PULL (Pipeline Pattern)
+This is work like a queue:
+1. Push socket: send tasks
+2. Pull socket: recieve task and load balance automatically
 
+**producer.py**
+```python
+import zmq
+import time
+
+context = zmq.Context()
+socket = context.socket(zmq.PUSH)
+socket.bind("tcp://127.0.0.1:5555")
+
+for i in range(5):
+    msg = f"Task {i}"
+    print("Sending:", msg)
+    socket.send_string(msg)
+    time.sleep(1)
+```
+
+**worker.py**
+```python
+import zmq
+
+context = zmq.Context()
+socket = context.socket(zmq.PULL)
+socket.connect("tcp://127.0.0.1:5555")
+
+while True:
+    msg = socket.recv_string()
+    print("Recieved:", msg)
+```
 
