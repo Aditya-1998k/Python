@@ -48,7 +48,7 @@ Example:
 from xmlrpc.server import SimpleXMLRPCServer
 
 def greet(name):
-    return f"Hello {name}"
+    return f"Hello {name}. This the XML-RPC server response for your xmlrpc call."
 
 host = "localhost"
 port = 8000
@@ -70,7 +70,34 @@ import xmlrpc.client as client
 # Create connection with server
 host = "localhost"
 port = 8000
-conn = client.ServerProxy(f"{host}:{port}")
+conn = client.ServerProxy(f"http://{host}:{port}")
 
 print(conn.greet("Aditya"))
 ```
+
+Now, first run the xmlrpc server and then client.py
+
+Output:
+```
+Hello Aditya. This the XML-RPC server response for your xmlrpc call.
+```
+
+**ASCII Diagram**
+```python
+Client (xmlrpc.client)                            Server (SimpleXMLRPCServer)
+----------------------------------------------------------------
+server.greet("Aditya")  ----HTTP POST--------> <methodCall><methodName>greet</methodName>...
+                                               Execute greet("Aditya") → return Response
+         <---HTTP Response--- -----------------<methodResponse>Hello Aditya</methodResponse>
+```
+
+### Advantages
+1. Very simple to implement.
+2. Cross-language support (clients exist in Python, Java, PHP, etc.).
+3. No need to design REST APIs or schemas.
+
+### Disadvantages
+1. Uses XML → verbose and slow compared to JSON/Protobuf.
+2. No support for streaming or advanced features (like gRPC).
+3. Mostly considered legacy, rarely used in modern systems.
+
