@@ -101,3 +101,36 @@ server.greet("Aditya")  ----HTTP POST--------> <methodCall><methodName>greet</me
 2. No support for streaming or advanced features (like gRPC).
 3. Mostly considered legacy, rarely used in modern systems.
 
+
+# Json RPC
+JSON-RPC is very similar to XML-RPC, but instead of XML, it uses JSON messages.
+Unlike xmlrpc (which is built into Python), JSON-RPC is usually done with a third-party library like `jsonrpclib-pelix`
+
+`pip install jsonrpclib-pelix`
+
+**jsonrpc_server.py**
+```python
+from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer
+
+server = SimpleJSONRPCServer(("localhost", 4000))
+print("JSON-RPC server listening on port 4000...")
+
+def greet(name):
+    return f"Hello, {name}!"
+
+# Register function
+server.register_function(greet)
+
+# Run server
+server.serve_forever()
+```
+
+**clientrpc_server.py**
+```python
+import jsonrpclib
+
+conn = jsonrpclib.Server("http://localhost:4000")
+
+# Call remote function
+print(conn.greet("Aditya"))
+```
