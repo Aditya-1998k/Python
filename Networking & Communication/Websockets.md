@@ -39,7 +39,7 @@ import websockets
 async def echo(websockets):
     async for message in websockets:
         print(f"Recieved message: {message}")
-        await websocket.send(f"Echo: Hey, Recieved your message. Thanks")
+        await websockets.send(f"Echo: Hey, Recieved your message. Thanks")
 
 async def main():
     async with websockets.serve(echo, "localhost", 8765):
@@ -58,7 +58,23 @@ async def hello():
     async with websockets.connect("ws://localhost:8765") as websocket:
         await websocket.send("Hello Websockets !")
         reply = await websocket.recv()
-        print("Server replied: {reply}")
+        print(f"Server replied: {reply}")
 
 asyncio.run(hello())
 ```
+Output:
+
+server.py
+```
+WebSocket server running on ws://localhost:8765
+Recieved message: Hello Websockets !
+```
+client.py
+```
+Server replied: Echo: Hey, Recieved your message. Thanks
+```
+
+Note:
+1. Uses ws:// or wss:// (secure WebSockets).
+2. Connection stays open until explicitly closed.
+3. Ideal for real-time bidirectional updates.
