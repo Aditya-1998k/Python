@@ -61,3 +61,55 @@ Python time: 0.8223 sec
 Cython result: 49999995000000
 Cython time: 0.0049 sec
 ```
+
+### 2. Numba
+Just add a decorator `@jit` or `@njit` and JIT compiles python functions
+into optimized machine code.
+
+Works best with Numpy array and math-heavy code.
+No compilation step required.
+
+```python
+from numba import njit
+import numpy as np
+import time
+
+@njit
+def fast_num_numba(arr):
+    total = 0
+    for x in arr:
+        total += x
+    return total
+
+
+def sum_loop_py(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+
+if __name__ == "__main__":
+    N = 10_000_000
+    
+    start = time.time()
+    result = sum_loop_py(N)
+    end = time.time()
+    
+    print(f"Python result: {result}")
+    print(f"Python time: {end - start:.4f} sec")
+
+    start = time.time()
+    result = mymodule.sum_loop(N)
+    end = time.time()
+    
+    print(f"Cython result: {result}")
+    print(f"Cython time: {end - start:.4f} sec")
+
+    start = time.time()
+    result = mymodule.fast_num_numba(N)
+    end = time.time()
+    
+    print(f"Numba result: {result}")
+    print(f"Numba time: {end - start:.4f} sec")
+```
