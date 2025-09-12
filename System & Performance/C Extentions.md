@@ -120,3 +120,6 @@ Numba result: 49999995000000
 Numba time: 0.2440 sec
 ```
 
+- First Run: Slower than cython due to JIT compile
+- 2nd Run: As fast as Cython
+
