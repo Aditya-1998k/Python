@@ -65,3 +65,27 @@ channel.basic_publish(exchange="",
 print("Sent Hello Rabbitmq")
 connection.close()
 ```
+
+**consumer.py**
+```python
+import pika
+
+def on_response(ch, method, properties, body):
+    """
+    When message recieved then the method
+    will trigger.
+    """
+    breakpoint()
+    print(f"Recieved: {body.decode()}")
+
+connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+channel = connection.channel()
+
+channel.queue_declare(queue="hello")
+
+# Subscribe to queues
+channel.basic_consume(queue="test", on_message_callback=on_response, auto_ack=True)
+
+print("Waiting for messages")
+channel.start_consuming()
+```
