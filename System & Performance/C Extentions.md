@@ -69,7 +69,10 @@ into optimized machine code.
 Works best with Numpy array and math-heavy code.
 No compilation step required.
 
-`pip install numba`
+```
+pip install numba
+pip install numpy
+```
 
 ```python
 from numba import njit
