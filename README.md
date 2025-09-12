@@ -14,10 +14,11 @@
 ## 🔹 Networking & Communication
 - **Sockets (TCP/UDP)** – Low-level network communication.
 - **ZeroMQ / PyZMQ** – High-performance messaging.
+- **xmlRPC** - Legacy python native Remote procedure call
 - **gRPC** – Remote Procedure Calls.
 - **HTTP Clients** – `requests`, `httpx`, `aiohttp`.
 - **WebSockets** – Real-time communication.
-- **RPC / Message Queues** – RabbitMQ, Kafka, Celery.
+- **RPC / Message Queues** – RabbitMQ.
 
 ---
 
