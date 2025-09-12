@@ -89,3 +89,18 @@ channel.basic_consume(queue="test", on_message_callback=on_response, auto_ack=Tr
 print("Waiting for messages")
 channel.start_consuming()
 ```
+
+**on_response** method have below Parameters. Rabbitmq call this method with those arguments when recieves messages on
+subscribed queues.
+```bash
+(Pdb) ch
+<BlockingChannel impl=<Channel number=1 OPEN conn=<SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7c1688369210> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>>>
+(Pdb) method
+<Basic.Deliver(['consumer_tag=ctag1.2705851096264b82862b2da52ffc2e0e', 'delivery_tag=1', 'exchange=', 'redelivered=False', 'routing_key=test'])>
+(Pdb) properties
+<BasicProperties>
+(Pdb) properties.__dict__
+{'content_type': None, 'content_encoding': None, 'headers': None, 'delivery_mode': None, 'priority': None, 'correlation_id': None, 'reply_to': None, 'expiration': None, 'message_id': None, 'timestamp': None, 'type': None, 'user_id': None, 'app_id': None, 'cluster_id': None}
+(Pdb) body
+b'Hello Rabbitmq'
+```
