@@ -196,3 +196,16 @@ channel.basic_consume(queue='rpc_queue', on_message_callback=on_response)
 print("Awaiting RPC requests")
 channel.start_consuming()
 ```
+
+Output (cleint.py)
+```
+Message Sent to worker, waiting for response
+Got Response : Hello World from worker
+```
+
+Output (server.py)
+```
+Awaiting RPC requests
+ [.] Received request: World
+ [.] Received request: World
+```
