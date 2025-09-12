@@ -132,7 +132,8 @@ def publish_to_rabbitmq_rpc():
     corr_id = str(uuid.uuid4())
 
     def on_response(ch, method, props, body):
-         global response
+         # use response defined in outer function
+         nonlocal response
          if props.correlation_id == corr_id:
              response = body.decode()
 
