@@ -85,3 +85,26 @@ gc.enable()
 gc.collect()
 print("Manual GC done")
 ```
+
+### weakref module
+The weakref module in Python provides a mechanism for creating weak references to objects.
+Unlike normal (strong) references, weak references do not prevent an object from being garbage collected.
+This is crucial for managing memory efficiently, especially in scenarios involving caches or circular references.
+
+1. Normally, objects are freed when their reference count → 0.
+2. A weak reference does not increase reference count, allowing object to be garbage-collected.
+3. Useful for caches and avoiding memory leaks in circular references.
+
+```python
+import weakref
+
+class Demo:
+    pass
+
+obj = Demo()
+weak = weakref.ref(obj)  # weak reference
+print(weak())            # access object
+
+del obj
+print(weak())  # → None (object collected)
+```
