@@ -1,4 +1,7 @@
-Rabbitmq is a open source message broker that implements the AMQP (Advance message queuing protocol).
+# Rabbitmq
+1. Rabbitmq is a open source message broker that implements the AMQP (Advance message queuing protocol).
+2. It allows applications to communicate by sending messages via queues, decoupling producers (senders) and consumers(recievers)
+
 
 **AMQP** is a open standard protocol for messaging between two applications. It defines how messages
 are formatted, stored, routed, delievered and acknowledged.
@@ -29,3 +32,5 @@ Why AMQP?
 Rabbitmq Remote Procedure Call:
 
 <img width="768" height="107" alt="image" src="https://github.com/user-attachments/assets/0e6486ea-25c5-438c-8e2b-212a7bcf9e3c" />
+
+
