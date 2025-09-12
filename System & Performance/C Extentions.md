@@ -69,6 +69,8 @@ into optimized machine code.
 Works best with Numpy array and math-heavy code.
 No compilation step required.
 
+`pip install numba`
+
 ```python
 from numba import njit
 import numpy as np
@@ -82,32 +84,25 @@ def fast_num_numba(arr):
     return total
 
 
-def sum_loop_py(n):
+def sum_loop_py(arr):
     total = 0
-    for i in range(n):
+    for i in arr:
         total += i
     return total
 
 
 if __name__ == "__main__":
     N = 10_000_000
+    arr = np.arange(N)
     
     start = time.time()
-    result = sum_loop_py(N)
+    result = sum_loop_py(arr)
     end = time.time()
     
     print(f"Python result: {result}")
     print(f"Python time: {end - start:.4f} sec")
 
     start = time.time()
-    result = mymodule.sum_loop(N)
-    end = time.time()
-    
-    print(f"Cython result: {result}")
-    print(f"Cython time: {end - start:.4f} sec")
-
-    start = time.time()
-    arr = np.arange(N)
     result = mymodule.fast_num_numba(arr)
     end = time.time()
     
