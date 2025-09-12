@@ -71,7 +71,7 @@ No compilation step required.
 
 ```
 pip install numba
-pip install numpy
+# pip install numpy (Installed with numba as dependency)
 ```
 
 ```python
@@ -106,9 +106,17 @@ if __name__ == "__main__":
     print(f"Python time: {end - start:.4f} sec")
 
     start = time.time()
-    result = mymodule.fast_num_numba(arr)
+    result = fast_num_numba(arr)
     end = time.time()
     
     print(f"Numba result: {result}")
     print(f"Numba time: {end - start:.4f} sec")
 ```
+Result:
+```bash
+Python result: 49999995000000
+Python time: 1.2367 sec
+Numba result: 49999995000000
+Numba time: 0.2440 sec
+```
+
