@@ -107,7 +107,8 @@ if __name__ == "__main__":
     print(f"Cython time: {end - start:.4f} sec")
 
     start = time.time()
-    result = mymodule.fast_num_numba(N)
+    arr = np.arange(N)
+    result = mymodule.fast_num_numba(arr)
     end = time.time()
     
     print(f"Numba result: {result}")
