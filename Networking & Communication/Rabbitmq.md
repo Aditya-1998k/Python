@@ -29,10 +29,6 @@ Why AMQP?
 3. `Routing` : messages sent to queues based on rules
 4. `RPC` : Request/Response over queues
 
-Rabbitmq Remote Procedure Call:
-
-<img width="768" height="107" alt="image" src="https://github.com/user-attachments/assets/0e6486ea-25c5-438c-8e2b-212a7bcf9e3c" />
-
 ### Pika
 Pika is a official client library for Rabbitmq. It implements 0.9.1 protocol, allowing  python apps to publish, consume and manage
 queues/exchanges.
@@ -104,3 +100,16 @@ subscribed queues.
 (Pdb) body
 b'Hello Rabbitmq'
 ```
+
+### RPC with Rabbitmq
+
+<img width="768" height="107" alt="image" src="https://github.com/user-attachments/assets/0e6486ea-25c5-438c-8e2b-212a7bcf9e3c" />
+
+How RPC works:
+1. When the Client starts up, it creates an exclusive callback queue.
+2. For an RPC request, the Client sends a message with two properties: reply_to, 
+which is set to the callback queue and correlation_id, which is set to a unique value for every request.
+3. The request is sent to an rpc_queue queue.
+4. The RPC worker (aka: server) is waiting for requests on that queue. When a request appears, 
+it does the job and sends a message with the result back to the Client, using the queue from the reply_to field.
+5. The client waits for data on the callback queue. When a message appears, it checks the correlation_id property. If it matches the value from the request it returns the response to the application.
