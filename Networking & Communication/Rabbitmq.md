@@ -114,17 +114,22 @@ which is set to the callback queue and correlation_id, which is set to a unique 
 it does the job and sends a message with the result back to the Client, using the queue from the reply_to field.
 5. The client waits for data on the callback queue. When a message appears, it checks the correlation_id property. If it matches the value from the request it returns the response to the application.
 
-```
+**rpc_client.py**
+```python
 import pika
+import uuid
 
 def publish_to_rabbitmq_rpc():
     # Creating connection and channel
-    self.connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
-    self.channel = self.connection.channel()
+    connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+    channel = connection.channel()
 
     # Define callback queue
-    result = self.channel.queue_declare(queue="", exclusive=True)
+    result = channel.queue_declare(queue="", exclusive=True)
     callback_queue = result.method.queue
+
+    response = None
+    corr_id = str(uuid.uuid4())
 
     def on_response(ch, method, props, boyd):
          global response
@@ -151,7 +156,6 @@ def publish_to_rabbitmq_rpc():
         connection.process_data_events()
 
     print(f"Got Response : {response}")
-
 
 publish_to_rabbitmq_rpc()
 ```
