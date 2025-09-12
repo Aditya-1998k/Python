@@ -1,0 +1,63 @@
+Python is slow for heavy computation due to GIL and interpreted nature.
+`Cython` and `Numba` let you run **c-speed** code while writing mostly in python.
+
+### 1. Cython
+1. Write python-like syntax, add static types and compile to C.
+2. Best for tight loops, numeric code and algorithms.
+3. Requires a .pyx file + compilation steps.
+
+file_name : **mymodule.pyx**
+```cython
+def sum_loop(int n):
+    cdef int i, total = 0
+    for i in range(n):
+        total += i
+    return total
+```
+
+```bash
+pip install cython
+```
+
+Now compile the file with cython
+```bash
+(test) gaditya@lptl-gaditya:~/instances/projects$ cythonize -i mymodule.pyx
+Compiling /home/gaditya/instances/projects/mymodule.pyx because it changed.
+[1/1] Cythonizing /home/gaditya/instances/projects/mymodule.pyx
+```
+
+file_name: **benchmark.py**
+```python
+import time
+
+def sum_loop_py(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+
+if __name__ == "__main__":
+    N = 10_000_000
+    
+    start = time.time()
+    result = sum_loop_py(N)
+    end = time.time()
+    
+    print(f"Python result: {result}")
+    print(f"Python time: {end - start:.4f} sec")
+
+    start = time.time()
+    result = mymodule.sum_loop(N)
+    end = time.time()
+    
+    print(f"Cython result: {result}")
+    print(f"Cython time: {end - start:.4f} sec")
+```
+Output:
+```bash
+Python result: 49999995000000
+Python time: 0.8223 sec
+Cython result: 49999995000000
+Cython time: 0.0049 sec
+```
