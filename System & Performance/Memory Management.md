@@ -108,3 +108,16 @@ print(weak())            # access object
 del obj
 print(weak())  # → None (object collected)
 ```
+
+### sys.getsizeof
+Returns memory (in bytes) taken by an object.
+Only gives the object’s immediate size, not deep contents.
+
+```python
+import sys
+
+x = [1, 2, 3, 4]
+print(sys.getsizeof(x))        # size of list object itself
+print(sys.getsizeof(x) + sum(sys.getsizeof(i) for i in x))  
+# including contained integers
+```
