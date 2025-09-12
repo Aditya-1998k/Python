@@ -159,3 +159,39 @@ def publish_to_rabbitmq_rpc():
 
 publish_to_rabbitmq_rpc()
 ```
+
+**rpc_server.py (worker)**
+```python
+import pika
+
+def on_response(ch, method, props, body):
+    message = body.decode()
+    print(f" [.] Received request: {message}")
+
+    # Echo back the message
+    response = f"Hello {message} from worker"
+    if props.reply_to:
+        ch.basic_publish(
+            exchange='',
+            routing_key=props.reply_to,
+            properties=pika.BasicProperties(
+                correlation_id=props.correlation_id
+            ),
+            body=response
+        )
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+# Creating connection and channel
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+channel = connection.channel()
+
+# Declaring rpc_queue
+channel.queue_declare(queue='rpc_queue')
+
+#prefetch count = 1 (for event distribution)
+channel.basic_qos(prefetch_count=1)
+channel.basic_consume(queue='rpc_queue', on_message_callback=on_response)
+
+print("Awaiting RPC requests")
+channel.start_consuming()
+```
