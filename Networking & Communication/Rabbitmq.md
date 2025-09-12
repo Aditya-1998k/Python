@@ -209,3 +209,26 @@ Awaiting RPC requests
  [.] Received request: World
  [.] Received request: World
 ```
+
+**connection.process_data_events()**
+
+Normally, when you call channel.start_consuming(), pika enters its own internal event loop and continuously processes events.
+But in your RPC client code, you don’t want to block forever in start_consuming(). Instead, you just want to:
+1. Send a request
+2. Wait until the response comes back
+
+That’s where connection.process_data_events() comes in:
+It tells pika:
+
+“Process any pending network events (incoming messages, connection updates, heartbeats) for me right now.”
+So each time you call it, pika checks if RabbitMQ has sent something — if the server (worker) replied, the callback (on_response) gets triggered.
+
+Note: process_data_events() also accepts a timeout (in seconds)
+```python
+connection.process_data_events(time_limit=1)
+```
+
+Some keyword you can visit:
+1. heartbeat
+2. redelievered messages
+3. consumer_timeout
