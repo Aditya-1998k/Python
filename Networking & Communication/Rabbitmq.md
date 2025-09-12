@@ -33,4 +33,35 @@ Rabbitmq Remote Procedure Call:
 
 <img width="768" height="107" alt="image" src="https://github.com/user-attachments/assets/0e6486ea-25c5-438c-8e2b-212a7bcf9e3c" />
 
+### Pika
+Pika is a official client library for Rabbitmq. It implements 0.9.1 protocol, allowing  python apps to publish, consume and manage
+queues/exchanges.
 
+RMQ Details running on local:
+```
+host: localhost
+port: 15672
+user_name: guest
+pwd: guest
+```
+Note: No need to mentioned rabbitmq port if you are using default pika port 5672
+
+**publisher.py**
+```python
+import pika
+
+# create blocking connection and channel
+connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+channel = connection.channel()
+
+# Declare queues
+channel.queue_declare(queue="hello")
+
+# Publish a message
+channel.basic_publish(exchange="",
+                      routing_key = "test",
+                      body="Hello Rabbitmq"
+                     )
+print("Sent Hello Rabbitmq")
+connection.close()
+```
