@@ -55,7 +55,7 @@ connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
 channel = connection.channel()
 
 # Declare queues
-channel.queue_declare(queue="hello")
+channel.queue_declare(queue="test")
 
 # Publish a message
 channel.basic_publish(exchange="",
@@ -73,15 +73,15 @@ import pika
 def on_response(ch, method, properties, body):
     """
     When message recieved then the method
-    will trigger.
+    will trigger with mentioned method parameter
+    by rabbitmq
     """
-    breakpoint()
     print(f"Recieved: {body.decode()}")
 
 connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
 channel = connection.channel()
 
-channel.queue_declare(queue="hello")
+channel.queue_declare(queue="test")
 
 # Subscribe to queues
 channel.basic_consume(queue="test", on_message_callback=on_response, auto_ack=True)
