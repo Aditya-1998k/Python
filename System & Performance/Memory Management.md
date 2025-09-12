@@ -12,7 +12,23 @@ gc.collect()
 # Debug objects tracked by GC
 print(gc.get_stats())
 ```
+Output:
+```
+[
+    {'collections': 12, 'collected': 46, 'uncollectable': 0},
+    {'collections': 1, 'collected': 0, 'uncollectable': 0},
+    {'collections': 1, 'collected': 51, 'uncollectable': 0}
+]
+```
+```
+- Generation 0 → young objects (short-lived, e.g., function locals).
+- Generation 1 → promoted objects that survived gen-0 collections.
+- Generation 2 → oldest objects (long-lived, e.g., modules, globals).
 
+- collections → How many times this generation was collected.
+- collected → Number of objects successfully freed.
+- uncollectable → Objects that couldn’t be collected (e.g., cycles with __del__).
+```
 Some time we need garbage collection:
 1. **Circular Reference Problem**
 Reference couting alone can't cleanup objects if they reference each other. Here `GC` is needed.
