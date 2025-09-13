@@ -1,3 +1,6 @@
+## Lint Like Lightning, Deploy Like a Ninja: Ruff + Dagger in Action
+Speaker : [Urvashi Choubey](https://www.linkedin.com/in/urvashi-choubey/)
+
 **Problem with current Devops**:
 
 1. `Linting and Formating` : Multiple tools (flake8, isort, black formater, pep8) which is slow and fragmented (+10 minutes cumulative)
