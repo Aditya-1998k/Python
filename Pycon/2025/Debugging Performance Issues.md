@@ -90,12 +90,11 @@ Python uses generational garbage collection:
 - `gen1` : survive 1 cycle.
 - `gen2` : survive many cycles.
 
-Cyclic references: gen0 cannot clean them (needs higher gen collection).
-
+**Note:** Cyclic references: gen0 cannot clean them (needs higher gen collection).
 You can tune thresholds to trigger GC.
 
-✅ Example:
-
+Example:
+```python
 import gc
 
 print(gc.get_threshold())   # default thresholds (700, 10, 10)
@@ -105,50 +104,35 @@ gc.set_threshold(500, 5, 5)
 
 # Force collection
 gc.collect()
+```
 
-4. Flamegraphs
-
+### 4. Flamegraphs
 Visualization of where CPU time is spent.
-
 py-spy and memray can generate flamegraphs.
 
-✅ Example with py-spy:
-
+Example with py-spy:
+```bash
 py-spy record -o profile.svg -- python myscript.py
-
-
+```
 Then open profile.svg in a browser.
 
-5. Case Study (Key Lessons)
+### Key Lessons
+1. Combine CPU + memory profiling for a holistic view.
+2. Start with sampling profiler in prod (low overhead).
+3. Use deterministic profiling locally for detail.
+4. Use snapshots & diffs (tracemalloc) to find memory leaks.
+5. Tune GC thresholds to optimize collection and avoid pauses.
 
-Combine CPU + memory profiling for a holistic view.
-
-Start with sampling profiler in prod (low overhead).
-
-Use deterministic profiling locally for detail.
-
-Use snapshots & diffs (tracemalloc) to find memory leaks.
-
-Tune GC thresholds to optimize collection and avoid pauses.
-
-6. Key Takeaways
-
-🔍 Use the right profiler for the problem:
-
+### Key Takeaways
+1. Use the right profiler for the problem:
+```
 cProfile → function-level bottlenecks.
-
 py-spy/Pyinstrument → low-overhead, sampling in prod.
-
 memory_profiler/tracemalloc/memray → memory leaks & footprint.
-
-⚡ Systematic debugging:
-
+```
+2. Systematic debugging:
+```
 Detect bottleneck (CPU vs Memory).
-
 Profile with the right tool.
-
 Interpret flamegraphs / stats.
-
-Fix & validate.
-
-🧹 Don’t forget GC tuning — sometimes overhead is due to garbage collection, not your code.
+```
