@@ -1,6 +1,7 @@
 ## Finding a Needle in the Haystack – Debugging Performance Issues
+Speaker: [Puneet Khushwani](https://www.linkedin.com/in/puneet-khushwani-01012726/)
 
-Why Performance Debugging Feels Like a “Needle in a Haystack”
+**Why Performance Debugging Feels Like a “Needle in a Haystack”**
 1. Severe performance incidents = urgent debugging.
 2. Challenge: finding the true bottleneck (CPU, memory, GC, I/O, etc.).
 3. Need a systematic approach instead of guesswork.
