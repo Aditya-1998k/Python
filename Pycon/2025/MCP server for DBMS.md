@@ -24,6 +24,10 @@ User Prompt
 AI-powered App  --- HTTP / MCP --->  MCP Server (Python)  ---> DB (YDB)
                                    (Request translation)
 
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/b477731a-7235-4b9e-8416-bb5f8dce7964" />
+
+
 ```
 1. LLM sends structured MCP requests (e.g., “fetch customers who ordered last month”).
 2. MCP server translates → SQL / YQL query for YDB.
