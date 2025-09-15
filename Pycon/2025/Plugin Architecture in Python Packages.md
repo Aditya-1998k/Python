@@ -232,4 +232,18 @@ python -m hello_world --language english
 # Run Kannada (plugin)
 python -m hello_world --language kannada
 # Output: ನಮಸ್ಕಾರ ಪ್ರಪಂಚ!
+
+# Uninstall
+pip uninstall hello-world hello-world-kannada
 ```
+
+Other Note:
+1. pip install -e . makes an editable install so you can change files and re-run without reinstalling.
+2. If you prefer non-editable installs, use pip install ./hello-world and pip install ./hello-world-kannada
+
+**Explaination:**
+1. Both packages register an entry point under the same group hello_world.languages.
+2. The core package uses importlib.metadata.entry_points(...) to discover installed plugins at runtime.
+3. Each entry point points to a Python object (here a class) which the core loads with .load() and uses uniformly (cls().hello()).
+4. Plugins can be shipped independently and installed later — no change needed in core.
+
