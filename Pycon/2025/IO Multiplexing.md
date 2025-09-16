@@ -39,4 +39,49 @@ while True:
     conn, addr = server.accept()
     Thread(target=handle_client, args=(conn,)).start()
 ```
+Works for small scale, but not efficient for thousands of connections
+
+---
+
+## 3️⃣ Single-threaded Concurrency with Selectors
+
+- Use **non-blocking sockets** + **I/O multiplexing**
+- Python `selectors` module (wrapper for `select`, `poll`, `epoll`, etc.)
+- **Concept:** monitor multiple sockets and react only when data is ready → **event-driven architecture**
+
+```python
+import selectors
+import socket
+
+sel = selectors.DefaultSelector()
+
+def accept(sock):
+    conn, addr = sock.accept()
+    conn.setblocking(False)
+    sel.register(conn, selectors.EVENT_READ, read)
+
+def read(conn):
+    data = conn.recv(1024)
+    if data:
+        conn.sendall(data)
+    else:
+        sel.unregister(conn)
+        conn.close()
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(('0.0.0.0', 8888))
+server.listen()
+server.setblocking(False)
+sel.register(server, selectors.EVENT_READ, accept)
+
+while True:
+    events = sel.select()
+    for key, _ in events:
+        callback = key.data
+        callback(key.fileobj)
+```
+Advantages:
+- Single-threaded → minimal memory overhead
+- Can handle thousands of simultaneous connections
+- Works on Linux (epoll), Mac (kqueue), Windows (select)
 
