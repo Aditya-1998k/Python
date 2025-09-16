@@ -147,4 +147,69 @@ Advantages:
 - Single-threaded → minimal memory overhead
 - Can handle thousands of simultaneous connections
 - Works on Linux (epoll), Mac (kqueue), Windows (select)
+```
 
+## 4️⃣ Asyncio: High-Level Async I/O
+Built on event loop concepts from selectors
+Uses coroutines (async def) and tasks for cooperative scheduling
+await → yields control to the event loop until the awaited operation completes
+```python
+import asyncio
+
+async def handle_client(reader, writer):
+    data = await reader.read(100)
+    writer.write(data)
+    await writer.drain()
+    writer.close()
+    await writer.wait_closed()
+
+async def main():
+    server = await asyncio.start_server(handle_client, '0.0.0.0', 8888)
+    async with server:
+        await server.serve_forever()
+
+asyncio.run(main())
+```
+
+Benefits of asyncio:
+1. High-level API, less boilerplate than raw selectors
+2. Efficient memory usage → can handle 10k+ connections
+3. Supports async streams, subprocesses, networking, timers
+
+## 5️⃣ Async Sockets & Streams
+Asyncio provides stream-based abstraction:
+asyncio.StreamReader / StreamWriter for TCP
+Non-blocking input() or network I/O is possible with asyncio coroutines
+
+Works well for real-time applications, chat servers, and async clients
+
+## 6️⃣ Key Takeaways
+Concurrency models in Python:
+- Threads → easy but limited by GIL, high memory usage
+- Selectors → event-driven, efficient for large-scale I/O
+Asyncio → high-level, cooperative multitasking, best for scalable network apps
+
+I/O Multiplexing:
+- Monitors multiple sockets for events (select, poll, epoll)
+- Avoids blocking and context switching overhead
+
+Asyncio:
+- Coroutines = lightweight threads
+- await = cooperative scheduling, non-blocking
+Ideal for thousands of simultaneous connections
+
+## 7️⃣ References
+1. Python selectors module: https://docs.python.org/3/library/selectors.html
+2. Python asyncio module: https://docs.python.org/3/library/asyncio.html
+3. Linux manpages for select, poll, epoll
+4. Async I/O patterns in Python: Real Python Async Guide
+
+## 8️⃣ ASCII Diagram: Async Socket Flow
+```
+Client1 ---\
+Client2 -------------> [Asyncio Event Loop] ----> Server
+Client3 ---/       (selectors under the hood)
+```
+1. Event loop monitors all client connections
+2. When data is ready, the corresponding coroutine is scheduled
+3. Efficiently handles thousands of connections without threads
