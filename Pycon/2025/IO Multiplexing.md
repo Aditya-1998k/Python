@@ -43,6 +43,69 @@ Works for small scale, but not efficient for thousands of connections
 
 ---
 
+#### Problem:
+When a server needs to handle many simultaneous socket connections, checking each socket one by one for data (blocking I/O) is inefficient.
+We need a way to monitor multiple sockets at once and react only when a socket is ready for reading/writing.
+This is where I/O multiplexing comes in. Linux, Unix, and Windows provide different APIs for this:
+
+##### **select**
+Oldest and most portable mechanism (POSIX standard)
+Monitors a fixed set of file descriptors (sockets)
+Can tell which sockets are ready to read, write, or have errors
+Limitation: maximum number of file descriptors (often 1024 on Linux)
+Works on Linux, Windows, Mac
+```
+import select
+readable, writable, errored = select.select([sock1, sock2], [], [], timeout)
+```
+Drawbacks:
+- Scales poorly for thousands of connections
+- Linear scanning of file descriptors
+
+##### poll
+Improvement over select
+Can handle large number of file descriptors
+Uses event structures instead of fixed arrays
+Linux/Unix only
+```python
+import select
+
+poller = select.poll()
+poller.register(sock1, select.POLLIN)
+events = poller.poll(timeout)
+```
+```
+POLLIN → ready for reading
+POLLOUT → ready for writing
+```
+Advantages over select:
+1. No fixed fd limit
+2. Better performance with thousands of sockets
+
+##### epoll (Linux-specific)
+Most efficient I/O multiplexing mechanism on Linux
+Uses event-driven interface
+Supports edge-triggered and level-triggered notifications
+Scales to tens of thousands of sockets with minimal CPU overhead
+```python
+import select
+
+epoll = select.epoll()
+epoll.register(sock1.fileno(), select.EPOLLIN)
+events = epoll.poll(timeout)
+```
+- EPOLLIN → ready for reading
+- EPOLLOUT → ready for writing
+
+Advantages:
+1. Handles very large numbers of sockets efficiently
+2. OS notifies only sockets that have activity → minimal CPU use
+
+##### kqueue (BSD / MacOS)
+Similar to epoll, but for BSD-based systems (MacOS, FreeBSD)
+Efficient event notification system
+Used under the hood by Python selectors on MacOS
+
 ## 3️⃣ Single-threaded Concurrency with Selectors
 
 - Use **non-blocking sockets** + **I/O multiplexing**
