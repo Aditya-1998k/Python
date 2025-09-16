@@ -23,3 +23,12 @@ OSI Model:
 +--------------------------------------------------+
 ```
 
+When we run `https://www.example.com` in browser:
+1. DNS Lookup → Convert www.example.com → 93.184.216.34
+2. TCP Handshake → Establish connection with server (SYN, SYN-ACK, ACK)
+3. TLS Handshake → Negotiate encryption keys
+4. HTTP GET Request → Ask for /index.html
+5. HTTP Response → Server sends back data
+6. Connection Teardown → TCP FIN → ACK → FIN → ACK
+
+
