@@ -225,3 +225,83 @@ from scapy.all import *
 ```
 all imports all the core modules: IP, TCP, UDP, ICMP, sr1, send, sniff, etc
 
+1. Inspect a Packet
+```python
+packet = IP(dst="8.8.8.8")/ICMP()
+packet.show()      # Detailed view of all layers
+packet.summary()   # One-line summary
+```
+Output:
+```
+###[ IP ]###
+  version= 4
+  ihl= None
+  tos= 0x0
+  len= None
+  ...
+###[ ICMP ]###
+  type= 8
+  code= 0
+```
+
+2. Send a Packet and Receive Response
+```python
+from scapy.all import sr1, IP, ICMP
+
+# Send ping
+resp = sr1(IP(dst="8.8.8.8")/ICMP(), timeout=2)
+
+if resp:
+    print("Response received!")
+    resp.show()
+else:
+    print("No response")
+```
+- sr1() → sends a packet and waits for 1 response
+- send() → sends a packet without waiting for response
+
+3. TCP Example: SYN Scan
+```python
+from scapy.all import IP, TCP, sr1
+
+target = "93.184.216.34"
+syn_pkt = IP(dst=target)/TCP(dport=80, flags="S")
+response = sr1(syn_pkt, timeout=2)
+
+if response:
+    response.show()
+```
+This sends a SYN packet to port 80 (HTTP).
+Response tells whether the port is open (SYN-ACK) or closed (RST).
+
+4. Sniffing Packets
+```python
+from scapy.all import sniff
+
+# Capture 5 packets on default interface
+packets = sniff(count=5)
+packets.summary()
+```
+Use filter="tcp" for only TCP packets:
+```python
+packets = sniff(count=5, filter="tcp")
+```
+
+#### Let's construct HTTP GET Request (Optional)
+```python
+from scapy.all import IP, TCP, Raw, sr1
+
+ip = IP(dst="93.184.216.34")
+tcp = TCP(dport=80, flags="S", seq=1000)
+syn_ack = sr1(ip/tcp, timeout=2)
+
+tcp_ack = TCP(dport=80, flags="A", seq=syn_ack.ack, ack=syn_ack.seq + 1)
+send(ip/tcp_ack)
+
+http_payload = b"GET / HTTP/1.1\r\nHost: example.com\r\n\r\n"
+http_request = ip/TCP(dport=80, sport=syn_ack.dport, seq=syn_ack.ack, ack=syn_ack.seq + 1, flags="PA")/Raw(load=http_payload)
+response = sr1(http_request, timeout=2)
+if response and Raw in response:
+    print(response[Raw].load.decode(errors="ignore"))
+```
+This mimics a browser request at the packet level.
