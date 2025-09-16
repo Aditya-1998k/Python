@@ -213,3 +213,15 @@ Browser/Python requests
      ▼
   TCP Connection Teardown (FIN/ACK)
 ```
+
+### Using Scapy in Python
+```
+pip install scapy
+```
+Note: Optional for network sniffing on Windows/Linux: you might need admin/root privileges.
+
+```python
+from scapy.all import *
+```
+all imports all the core modules: IP, TCP, UDP, ICMP, sr1, send, sniff, etc
+
