@@ -71,5 +71,48 @@ pip install snakeviz
 snakeviz perf_check.dumps
 ```
 
+### 2. Line Profiler
+Focus profiling each line inside the functions.
+Requires extra installations.
 
+```
+pip install line-profiler
+```
+Use `@profile` decorator and run with `kernprof`.
+
+**script.py**
+```python
+@profile
+def compute():
+    total = 0
+    for i in range(10_000_0):
+        total += i ** 2
+    return total
+```
+Now run below command:
+```
+kernprof -l -v script.py
+```
+Shows time spent per line inside compute.
+
+### 3. memory_profiler - Track Memory Usages
+Monitor line by line memory consumption.
+
+`pip install memory-profiler`
+
+**script.py**
+```python
+from memory_profiler import profile
+
+@profile
+def allocate():
+    x = [i for i in range(1_000_000)]
+    y = [i**2 for i in range(1_000_000)]
+    return x, y
+
+allocate()
+```
+Run : `python -m memory_profiler script.py`
+
+Output shows memory used at each line.
 
