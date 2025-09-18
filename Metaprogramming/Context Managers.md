@@ -130,3 +130,40 @@ Writing a full class with `__enter__` and `__exit__` can feel heavy for simple u
 Python's `context` module provides tools that let's you write context manager with simple functions or 
 decorators, instead of class.
 
+```python
+from contextlib import contextmanager
+import time
+
+@contextmanager
+def timer():
+    start = time.time()
+    print("⏱️ Timer started")
+    try:
+        yield   # control goes to the with-block here
+    finally:
+        end = time.time()
+        print(f"⏱️ Timer stopped, took {end - start:.4f} seconds")
+```
+
+Usages:
+```python
+with timer():
+    time.sleep(2)
+```
+Output:
+```
+⏱️ Timer started
+⏱️ Timer stopped, took 2.0001 seconds
+```
+
+Expaination:
+1. Code before yield = like `__enter__`.
+2. Code after yield = like `__exit__`.
+3. `yield` itself marks where the with block executes.
+4. Less boilerplate (no need for __enter__, __exit__ classes).
+5. Cleaner code for simple resource management.
+
+Contextlib have some utilities method:
+1. contextlib.suppress (ignore specific exceptions)
+2. contextlib.redirect_stdout (redirect print output),
+3. ExitStack (manage multiple resources)
