@@ -48,7 +48,10 @@ class MyContext:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # cleanup code (always runs, even if there’s an error)
-        return False  # if True, suppresses the exception
+        if exc_type or exc_val:
+              return False  # Raise Exception outside
+        else:
+              return True # Raise No exception outside (event if exc_tb is there)
 ```
 When Python exits a with block, it always calls `__exit__`.
 If an exception occurred inside the block, Python passes details of the exception into these three arguments:
@@ -57,3 +60,67 @@ If an exception occurred inside the block, Python passes details of the exceptio
 3. `exc_tb`: traceback object (where the error happened)
 4. If no error occurred: `exc_type`, `exc_val`, `exc_tb` --> all are None
 
+**Return value of __exit__** (Imprtant
+
+Return False (or None)
+```
+The exception (if any) is propagated after cleanup.
+Meaning: you still see the error if there is any error.
+```
+```
+Return True →
+The exception is suppressed (ignored).
+Python thinks: “I handled it, don’t raise it further.”
+```
+
+### Examples
+```python
+class Facility:
+    def __enter__(self):
+        print("✅ Show ID")
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print("Collect goodies")
+        if exc_type:
+            print(f"Error: {exc_type.__name__} - {exc_val}")
+        return False   # change to True to suppress
+```
+
+**Case A (if return False):**
+If any error occurs, it will raise outside
+```python
+with Facility():
+    1/0
+print("This line will not run")
+```
+Output:
+```
+✅ Show ID
+Collect goodies
+Error: ZeroDivisionError - division by zero
+Traceback (most recent call last):
+  ...
+ZeroDivisionError: division by zero
+```
+Error escapes the block and crashes program.
+
+**Case B (if return True):**
+Since `__exit__` function Returning True, means python
+will understand you have handled error gracefully.
+```python
+with Facility():
+    1 / 0
+print("This line WILL run")
+```
+Output:
+```
+✅ Show ID
+🎁 Collect goodies
+⚠️ Error: ZeroDivisionError - division by zero
+This line WILL run
+```
+Why useful?
+1. Clean setup + teardown logic in one place.
+2. Prevents forgetting cleanup (like closing files, releasing locks, disconnecting from DB).
+3. Exception-safe `__exit__` always runs.
