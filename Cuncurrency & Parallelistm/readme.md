@@ -33,8 +33,8 @@ and parallelism (executing tasks simultaneously).
 
 ### 6. Third Party Tools
 - **gevent** → Coroutine-based, uses greenlets + libev/libuv.
-- **eventlet** → Simplified networking library with green threads.
-- **Trio / Curio** → Alternative async frameworks focusing on structured concurrency.
+- **Joblib**
+- **Dask**
 
 ---
 
@@ -63,7 +63,7 @@ and parallelism (executing tasks simultaneously).
 
 ### Advanced
 10. How do third-party tools like gevent achieve concurrency differently from asyncio?  
-11. What is structured concurrency and why is it important in frameworks like Trio?  
+11. What isJoblib and dask?  
 12. If you had to handle 10,000 socket connections, which concurrency model would you choose and why?  
 
 ---
