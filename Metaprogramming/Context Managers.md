@@ -116,11 +116,17 @@ print("This line WILL run")
 Output:
 ```
 ✅ Show ID
-🎁 Collect goodies
-⚠️ Error: ZeroDivisionError - division by zero
+Collect goodies
+Error: ZeroDivisionError - division by zero
 This line WILL run
 ```
 Why useful?
 1. Clean setup + teardown logic in one place.
 2. Prevents forgetting cleanup (like closing files, releasing locks, disconnecting from DB).
 3. Exception-safe `__exit__` always runs.
+
+### Why contextlib?
+Writing a full class with `__enter__` and `__exit__` can feel heavy for simple usecase.
+Python's `context` module provides tools that let's you write context manager with simple functions or 
+decorators, instead of class.
+
