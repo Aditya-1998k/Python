@@ -38,6 +38,7 @@ Explaination:
 3. When leaving the with block → the file is automatically closed (`__exit__` runs).
 
 **Internal Structure:**
+
 A context manager is any object that defines two special methods:
 ```python
 class MyContext:
@@ -54,3 +55,4 @@ If an exception occurred inside the block, Python passes details of the exceptio
 1. `exc_type`: the class of the exception (e.g., ZeroDivisionError)
 2. `exc_val`: the actual exception object (e.g., ZeroDivisionError('division by zero'))
 3. `exc_tb`: traceback object (where the error happened)
+4. If no error occurred: exc_type, exc_val, exc_tb → all are None
