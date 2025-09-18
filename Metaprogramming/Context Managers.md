@@ -55,4 +55,5 @@ If an exception occurred inside the block, Python passes details of the exceptio
 1. `exc_type`: the class of the exception (e.g., ZeroDivisionError)
 2. `exc_val`: the actual exception object (e.g., ZeroDivisionError('division by zero'))
 3. `exc_tb`: traceback object (where the error happened)
-4. If no error occurred: exc_type, exc_val, exc_tb → all are None
+4. If no error occurred: `exc_type`, `exc_val`, `exc_tb` --> all are None
+
