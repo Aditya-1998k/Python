@@ -69,3 +69,9 @@ p.age = -5       # ValueError: age must be >= 0
            │      └─ returns p.__dict__['age'] │
            └───────────────────┘
 ```
+
+1. Descriptor lives in the class, not the instance.
+2. Instance attribute dictionary (p.__dict__) stores the actual value.
+3. __set__ controls assignment → validation.
+4. __get__ controls access → returns the value.
+5. __set_name__ automatically tells the descriptor the attribute name (age).
