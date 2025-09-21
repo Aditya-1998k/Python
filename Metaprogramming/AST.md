@@ -13,13 +13,13 @@ keeping behaviour intact.
 4. **Custom Compilers/DSLs** : Build your own query language, rule engine or ORMs etc
 - SQLAlchemy is a perfect real-world example of a DSL + compiler built in Python.
 - DSL (Domain Specific Language) : You don’t write raw SQL. Instead, you write Python expressions that look like SQL
-```sql
-users = Table("users", metadata, Column("id", Integer), Column("name", String))
-query = select(users).where(users.c.id > 5)
-```
+
 ASCII Diagram
 ```python
 Python DSL (ORM/Query API)
+
+users = Table("users", metadata, Column("id", Integer), Column("name", String))
+query = select(users).where(users.c.id > 5)
         │
         ▼
   sqlalchemy turns your expression
