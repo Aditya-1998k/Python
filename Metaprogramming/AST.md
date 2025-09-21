@@ -51,3 +51,38 @@ query = select(users).where(users.c.id > 5)
    Python Result Objects
 ```
 
+---
+
+### Basic AST Parsing
+```python
+import ast
+
+code = "x = 5 + 3"
+
+# Parse into AST
+tree = ast.parse(code)
+
+# Pretty-print AST
+print(ast.dump(tree, indent=4))
+```
+Output:
+```
+Module(
+    body=[
+        Assign(
+            targets=[ 
+                Name(id='x', ctx=Store())],
+                value=BinOp(
+                     left=Constant(value=5),
+                     op=Add(),
+                     right=Constant(value=3)
+                    )
+              )
+    ],
+    type_ignores=[]
+)
+```
+1. Module(...) :
+- Root Node of any python files/script.
+- Its `.body` holdsa list of statements.
+- Here, it has one statement: an `Assign`.
