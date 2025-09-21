@@ -103,3 +103,47 @@ class Person(metaclass=MustHaveNameMeta):
 class Animal(metaclass=MustHaveNameMeta):
     pass  # ❌ Raises TypeError
 ```
+While creating class Animal, it will raise TypeError as `name` is mandotory attribute
+for creating class. We have enforced class creation rules.
+
+### 3. Method Wrapping
+```python
+class LogMethodsMeta(type):
+    def __new__(cls, name, bases, dct):
+        for attr, value in dct.items():
+            # If callable value in class attribute then
+            # bind log_wrapper
+            if callable(value):
+                dct[attr] = cls.log_wrapper(value)
+        return super().__new__(cls, name, bases, dct)
+
+    @staticmethod
+    def log_wrapper(func):
+        def wrapper(*args, **kwargs):
+            print(f"Calling {func.__name__}")
+            return func(*args, **kwargs)
+        return wrapper
+
+class MyClass(metaclass=LogMethodsMeta):
+    def greet(self):
+        print("Hello!")
+
+obj = MyClass()
+obj.greet()
+```
+Ouput:
+```
+Calling greet
+Hello!
+```
+**Use case**: Automatically wrap all methods (e.g., logging, authentication, validation).
+
+### Key Points
+1. Every class in Python is an instance of some metaclass.
+2. Default metaclass: type.
+3. Use `__new__` to modify class attributes or enforce rules at creation time.
+4. Use __init__ to customize after class creation.
+5. Metaclasses are heavily used in: ORMs (Django models, SQLAlchemy)
+6. Frameworks (Flask plugins, Pydantic)
+7. Automatic registration of plugins or handlers
+8. Advanced class-level validation or logging
