@@ -82,7 +82,10 @@ Module(
     type_ignores=[]
 )
 ```
-1. Module(...) :
+1. **Module(...)** :
 - Root Node of any python files/script.
 - Its `.body` holdsa list of statements.
 - Here, it has one statement: an `Assign`.
+
+2. **Assign**:
+- 
