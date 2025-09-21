@@ -88,4 +88,171 @@ Module(
 - Here, it has one statement: an `Assign`.
 
 2. **Assign**:
-- 
+- Represents an assignment like a = b.
+- Has two parts:
+1. targets → what we are assigning to.
+2. value → what we are assigning.
+
+3. **targets=[Name(id='x', ctx=Store())]**
+- The left-hand side of = is a variable name: x.
+-  ctx=Store() means x is in assignment context (we’re storing a value into it).
+-   (If it was print(x), then it would be ctx=Load() — reading the variable).
+
+3. **value=BinOp(...)**
+Right-hand side is a binary operation: 5 + 3.
+
+Inside:
+- left=Constant(value=5) → number literal 5.
+- op=Add() → the + operator.
+- right=Constant(value=3) → number literal 3.
+
+```bash
+Module
+ └── Assign
+      ├── Target: Name(id="x", ctx=Store)
+      └── Value: BinOp
+           ├── Left: Constant(5)
+           ├── Op: Add
+           └── Right: Constant(3)
+```
+
+Execution Meaning
+1. Create constant 5.
+2. Create constant 3.
+3. Apply binary operator +.
+4. Store result (8) into variable x.
+
+So at runtime, Python executes this AST as if you wrote:
+```python
+x = 5 + 3
+```
+
+### Traversing AST
+You can walk through the Tree:
+```python
+for node in ast.walk(tree):
+    print(type(node).__dict__)
+```
+Output:
+```
+Module
+Assign
+Name
+BinOp
+Constant
+Add
+Constant
+Store
+```
+
+### Modifying Code Dynamically
+Example: Transform a + b into a - b
+
+```python
+import ast
+
+class ReplaceAddWithSubs(ast.NodeTransformer):
+    def visit_BinOp(self, node):
+        if isinstance(node.op, ast.Add):
+            node.op = ast.Sub()
+        return self.generic_visit(node)
+
+code = "result = 10 + 5"
+tree = ast.parse(code)
+tree = ReplaceAddWithSubs().visit(tree)
+
+# Compile modified AST back to Code
+compiled = compile(tree, filename="<ast>", mode="exec")
+exec(compiled)
+
+print(result)
+```
+Output:
+```
+5
+```
+
+**Let's Decode Above code:**
+##### 1. Parse the code in AST
+```python
+code = "result = 10 + 5"
+tree = ast.parse(code)
+```
+AST Looks like
+```python
+Module
+ └── Assign
+      ├── Target: Name("result", ctx=Store)
+      └── Value: BinOp
+           ├── Left: Constant(10)
+           ├── Op: Add
+           └── Right: Constant(5)
+```
+
+##### 2. Define a Transformer
+```python
+class ReplaceAddWithSub(ast.NodeTransformer):
+    def visit_BinOp(self, node):
+        if isinstance(node.op, ast.Add):
+            node.op = ast.Sub()
+        return self.generic_visit(node)
+```
+- `NodeTransformer` lets you modify nodes in the AST.
+- `visit_BinOp` is called for every `BinOp` node (binary operations like +, -, *, /).
+- If the operator is Add, replace it with Sub.
+- self.generic_visit(node) ensures child nodes are still visited.
+So "10 + 5" becomes "10 - 5"
+
+##### 3. Apply Transformer
+```python
+tree = ReplaceAddWithSub().visit(tree)
+```
+Now ast modified with:
+```python
+Module
+ └── Assign
+      ├── Target: Name("result", ctx=Store)
+      └── Value: BinOp
+           ├── Left: Constant(10)
+           ├── Op: Sub   ← changed from Add → Sub
+           └── Right: Constant(5)
+```
+
+##### 4. Compile & Execute
+```python
+compiled = compile(tree, filename="<ast>", mode="exec")
+exec(compiled)
+```
+
+- `compile` takes the AST and turns it into executable Python bytecode.
+- `exec` runs it.
+- At runtime, it executes:
+  ```python
+  result = 10 - 5
+  ```
+
+  ASCII Flow
+  ```python
+   Source Code: "result = 10 + 5"
+        │
+        ▼
+   ast.parse
+        │
+        ▼
+  AST with BinOp(Add)
+        │
+        ▼
+ReplaceAddWithSub (NodeTransformer)
+        │
+        ▼
+  AST with BinOp(Sub)
+        │
+        ▼
+   compile → exec
+        │
+        ▼
+ Python executes: result = 10 - 5
+        │
+        ▼
+   Output: 5
+  ```
