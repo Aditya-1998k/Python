@@ -1,4 +1,4 @@
-# Reflection / Introspection – inspect, getattr, setattr.
+## Reflection / Introspection
 
 **Introspection:** The ability of program to examine itself at runtime
 (objects, classes, functions, attributes etc.)
@@ -7,7 +7,7 @@
 call methods dynamically etc.)
 
 
-### Useful BUILT-IN Function
+Useful BUILT-IN Function:
 1. **type(obj)** : Returns the type class of an objects.
 ```python
 x = [1, 2, 3]
@@ -27,7 +27,7 @@ print(callable(len))   # True
 print(callable(123))   # False
 ```
 Note:
-- **function** : Standalone block of code defined using `def` or (`lambda)`
+1. **function** : Standalone block of code defined using `def` or (`lambda)`
 It belongs to the module (or namespace) where it's defined.
 ```python
 def greet(name):
@@ -38,7 +38,7 @@ print(type(greet))       # <class 'function'>
 ```
 Here greet is just a function object, not tied to any class or instance.
 
-- **method**: A method is a function defined inside a class. It is usually
+2. **method**: A method is a function defined inside a class. It is usually
   called instance of the class. Python automatically passes the instance (`self`) as the
   first argument.
 ```
