@@ -7,26 +7,28 @@
 call methods dynamically etc.)
 
 
-Useful BUILT-IN Function:
-1. **type(obj)** : Returns the type class of an objects.
+**Useful Built-in Function:**
+1. type(obj) : Returns the type class of an objects.
 ```python
 x = [1, 2, 3]
 print(type(x))   # <class 'list'>
 ```
-2. **dir(obj)** : List all attributes and method of an objects.
+2. dir(obj) : List all attributes and method of an objects.
 ```
 print(dir(x))  # shows methods like append, extend, etc.
 ```
-3. **id(obj)** : Memory address (unique identity)
+3. id(obj) : Memory address (unique identity)
 ```python
 print(id(x))
 ```
-4. **callable(obj)** : check if object is callable (function, method etc)
+4. callable(obj) : check if object is callable (function, method etc)
 ```python
 print(callable(len))   # True
 print(callable(123))   # False
 ```
-Note:
+
+#### Basic Difference between Function and Method
+
 1. **function** : Standalone block of code defined using `def` or (`lambda)`
 It belongs to the module (or namespace) where it's defined.
 ```python
