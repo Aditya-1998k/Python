@@ -25,7 +25,7 @@ This section covers techniques for managing memory, leveraging concurrency, prof
 
 ---
 
-## ❓ Common Interview Questions
+## ❓ Common Questions
 
 ### 🔹 C Extensions
 1. How do C extensions improve Python performance?
