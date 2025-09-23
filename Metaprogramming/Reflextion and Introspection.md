@@ -134,3 +134,87 @@ print(callable(42))      # False
 The `inspect` module = deeper introspection toolbox.
 It lets you analyze functions, classes, methods, modules, code objects.
 
+1. Inspect Function Signature
+```python
+import inspect
+
+def greet(name, times=1):
+    """Say Hello multiple times."""
+    for _ in range(times):
+        print(f"Hello, {name}")
+
+# Method signature
+print(inspect.signature(greet))
+
+# Function docs
+print(inspect.getdoc(greet))
+```
+Output:
+```
+(name, times=1)
+Say hello multiple times.
+```
+2. Get Source Code
+```python
+import inspect
+
+print(inspect.getsource(greet))
+```
+Output:
+```
+def greet(name, times=1):
+    """Say hello multiple times."""
+    for _ in range(times):
+        print(f"Hello, {name}")
+```
+3. Check if Object is Function, Method, Class, etc.
+```python
+class Person:
+    def hello(self): pass
+
+print(inspect.isfunction(greet))    # True
+print(inspect.ismethod(Person().hello))  # True
+print(inspect.isclass(Person))      # True
+print(inspect.ismodule(inspect))    # True
+```
+4. Get class members
+```python
+print(inspect.getmembers(Person))
+```
+This returns a list of (name, attribute) pairs → useful to see everything inside a class.
+
+5. Find Caller Information
+```python
+import inspect
+
+def who_called_me():
+    frame = inspect.stack()[1]
+    print("Caller:", frame.function)
+
+def test():
+    who_called_me()
+
+test()
+```
+Output:
+```
+Caller: test
+```
+
+#### Cheatseat
+```
+# 📝 Python Introspection & `inspect` Module Cheatsheet
+
+| Task                                | Function |
+|-------------------------------------|----------|
+| Get type                            | `type(obj)` |
+| Get attributes                      | `dir(obj)` |
+| Is instance of class                | `isinstance(obj, cls)` |
+| Is subclass                         | `issubclass(sub, base)` |
+| Is callable                         | `callable(obj)` |
+| Get docstring                       | `inspect.getdoc(obj)` |
+| Get source code                     | `inspect.getsource(obj)` |
+| Get function signature              | `inspect.signature(func)` |
+| Is function/method / class / module | `inspect.isfunction(obj)`, `inspect.ismethod(obj)`, `inspect.isclass(obj)`, `inspect.ismodule(obj)` |
+| Get members of class/module         | `inspect.getmembers(obj)` |
+```
