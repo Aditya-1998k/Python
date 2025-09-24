@@ -128,3 +128,60 @@ with socket.create_connection(("127.0.0.1", 8443)) as sock:
         ssock.sendall(b"Hello secure world!")
 ```
 
+### 🔐 How TLS Certificates Work in Server & Client
+
+#### 🖥️ Server Side
+The server has:
+- `server_cert.pem` → public certificate signed by CA  
+- `server_key.pem` → private key (never shared)  
+
+When a client connects:
+1. The server presents its **certificate**.  
+2. The client checks: *"Was this cert signed by a trusted CA (`ca_cert.pem`)?"*  
+3. If yes → client trusts the server’s identity.  
+
+---
+
+#### 👤 Client Side
+The client has:
+- `client_cert.pem` → public certificate signed by CA  
+- `client_key.pem` → private key (never shared)  
+
+During TLS handshake (with **mutual auth** enabled):
+1. The server asks: *"Please prove who you are."*  
+2. The client presents its **certificate**.  
+3. The server checks it against the same **CA (`ca_cert.pem`)**.  
+4. If valid → server trusts the client’s identity.  
+
+---
+
+#### 🏛️ The Common Trust Anchor: CA
+- Both certificates (server & client) are signed by the same **CA (`ca_cert.pem`)**.  
+- Neither party trusts the other **directly** — they both trust the **CA**.  
+
+That’s why:
+- Client loads `ca_cert.pem` → to trust the **server**.  
+- Server loads `ca_cert.pem` → to trust the **client**.  
+
+---
+
+#### 🔑 Private Keys’ Role
+- Private keys (`server_key.pem`, `client_key.pem`) are used to **prove ownership** of the certificates.  
+- They never leave the machine.  
+
+During handshake:
+1. The peer sends a **challenge**.  
+2. The holder of the private key signs it.  
+3. The other side verifies with the **public key** inside the certificate.  
+
+---
+
+#### ✅ Why They Can Communicate
+Because **both trust the same CA**.  
+
+- Server says → *“Here’s my cert, signed by CA.”*  
+- Client says → *“I trust this CA, so you must be real.”*  
+- Client says → *“Here’s my cert, also signed by CA.”*  
+- Server says → *“I trust this CA, so you must be real too.”*  
+
+**Result:** 🔒 Secure two-way encrypted + authenticated channel.
