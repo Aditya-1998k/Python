@@ -41,14 +41,6 @@
 
 ---
 
-## 🔹 Data & Computation
-- **NumPy / Pandas Internals** – Vectorization, broadcasting.
-- **Generators & Itertools** – Lazy evaluation.
-- **Coroutines & Pipelines** – Stream data processing.
-- **RAG / Vector Databases** – Advanced ML/NLP workloads.
-
----
-
 ## 🔹 Security & Cryptography
 - **SSL/TLS with Sockets** – Encrypted communication.
 - **Hashlib & HMAC** – Cryptographic hashing.
@@ -63,6 +55,14 @@
 - **Kubernetes Clients** – Automating deployments.
 - **Async Event-Driven Systems** – `asyncio` + message brokers.
 - **Serverless Python** – AWS Lambda, GCP Functions.
+
+---
+
+## 🔹 Data & Computation
+- **NumPy / Pandas Internals** – Vectorization, broadcasting.
+- **Generators & Itertools** – Lazy evaluation.
+- **Coroutines & Pipelines** – Stream data processing.
+- **RAG / Vector Databases** – Advanced ML/NLP workloads.
 
 ---
 
