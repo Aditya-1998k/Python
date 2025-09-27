@@ -175,6 +175,10 @@ Result (initially None): None
 ```
 3. Start worker in another terminal
 ```
-
+13:08:54 default: tasks.background_task(4, 6) (e8553a96-2ec5-4d11-9add-a91bd347f5d0)
+Processing task: 4 + 6
+13:08:59 Successfully completed tasks.background_task(4, 6) job in 0:00:05.010189s on worker cd4ea24f9f3c4f708db53a46c1ed69af
+13:08:59 default: Job OK (e8553a96-2ec5-4d11-9add-a91bd347f5d0)
+13:08:59 Result is kept for 500 seconds
 ```
 
