@@ -174,6 +174,9 @@ Job enqueued: 4ff8c3bc-8e2b-4e12-b62a-2c13e17f9f17
 Result (initially None): None
 ```
 3. Start worker in another terminal
+
+`rq worker`
+
 ```
 13:08:54 default: tasks.background_task(4, 6) (e8553a96-2ec5-4d11-9add-a91bd347f5d0)
 Processing task: 4 + 6
