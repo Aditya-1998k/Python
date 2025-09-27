@@ -62,4 +62,56 @@ Architecture Diagram:
 3. Worker picks the task from the queue and executes
 4. Then result stored in either redis/DB/S3 etc
 
+For Testing keep Redis Running:
+```shell
+docker run -d --name redis -p 6379:6379 redis
+```
+
+consumer.py
+```python
+from tasks import add
+
+# Send task asynchronously
+result = add.delay(4, 6)
+
+print(result)  # AsyncResult object
+print(result.id)  # Task ID
+
+# Wait and get result
+print(result.get())  # Output: 10
+```
+
+tasks.py
+```python
+# tasks.py
+from celery import Celery
+
+app = Celery(
+    "my_tasks", broker="redis://localhost:6379/0", backend="redis://localhost:6379/0"
+)
+
+
+@app.task
+def add(x, y):
+    return x + y
+```
+
+Start the celery worker:
+```
+celery -A tasks worker --loglevel=info
+```
+- `-A tasks` → tells Celery to load from tasks.py
+- `worker` → start worker process
+- `--loglevel=info` → print logs
+
+Execution Flow:
+```
+Producer (your script)          Redis (Broker)           Worker
+---------------------           -----------------        -----------------
+add.delay(2,3)   --->   [Queue: "add", args: (2,3)] --->  executes add(2,3)
+                                      |
+                                      v
+                         (Optional) store result
+                                in Redis
+```
 
