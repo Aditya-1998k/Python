@@ -67,6 +67,8 @@ For Testing keep Redis Running:
 docker run -d --name redis -p 6379:6379 redis
 ```
 
+`pip install celery`
+
 consumer.py
 ```python
 from tasks import add
@@ -104,6 +106,11 @@ celery -A tasks worker --loglevel=info
 - `worker` → start worker process
 - `--loglevel=info` → print logs
 
+Note: 
+1. We can use either cli or flower dashboard to view
+2. We can scheduler task with celery `beat`
+3. We can configure number of worker also
+
 Execution Flow:
 ```
 Producer (your script)          Redis (Broker)           Worker
@@ -113,5 +120,61 @@ add.delay(2,3)   --->   [Queue: "add", args: (2,3)] --->  executes add(2,3)
                                       v
                          (Optional) store result
                                 in Redis
+```
+
+### RQ (Redis Queue)
+RQ is alternative to celery but with less features.
+It uses only redis as backend and broker.
+
+1. Easy to setup
+2. Easy to maintain
+3. Less feature than celery
+4. Ideal for small features
+
+```
+pip install rq rq-dashboard
+```
+
+rq-dashboard = Optional web UI
+
+**tasks.py**
+```python
+# tasks.py
+import time
+
+def background_task(x, y):
+    print(f"Processing task: {x} + {y}")
+    time.sleep(5)  # simulate a long job
+    return x + y
+```
+
+**producer.py**
+```python
+# producer.py
+from redis import Redis
+from rq import Queue
+from tasks import background_task
+
+# Connect to Redis (local instance)
+redis_conn = Redis(host="localhost", port=6379, db=0)
+
+# Create a queue
+q = Queue(connection=redis_conn)
+
+# Enqueue task
+job = q.enqueue(background_task, 4, 6)
+print("Job enqueued:", job.id)
+print("Result (initially None):", job.result)
+```
+
+1. Run the producer.py
+2. Job will be submitted and you get result as none initially
+```
+Job enqueued: 4ff8c3bc-8e2b-4e12-b62a-2c13e17f9f17
+Result (initially None): None
+```
+3. Start worker in another terminal
+```
+
 ```
 
