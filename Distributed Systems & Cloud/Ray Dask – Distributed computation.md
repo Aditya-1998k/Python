@@ -54,6 +54,6 @@ What happens here:
 - `square.remote(2)` = submits the task to Ray, it doesn’t execute immediately.
 - Instead, it returns a future object (a placeholder).
 - `ray.get(futures)` = waits for all tasks to finish and collects results.
-- And Even though i added 2 sec sleep time, total execution time was around 2.5sec which way less than 10 sec for sequential execution
+- And Even though i added 2 sec sleep time, total execution time was around 2.14 sec which way less than 10 sec for sequential execution
 
 
