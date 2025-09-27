@@ -184,4 +184,11 @@ Processing task: 4 + 6
 13:08:59 default: Job OK (e8553a96-2ec5-4d11-9add-a91bd347f5d0)
 13:08:59 Result is kept for 500 seconds
 ```
+4. Install `rq-dashboard` and visit http://localhost:9181/
+```
+pip install rq-dashboard
+
+Run: rq-dashboard
+```
+<img width="1356" height="561" alt="image" src="https://github.com/user-attachments/assets/a4efdb16-bf35-4edc-af04-063f6213701b" />
 
