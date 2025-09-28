@@ -92,4 +92,24 @@ Output:
 Recieved: Hello Async World!
 ```
 
+### Why to use Asyncio + aio-pika
+In traditional Distributed system. Each worker usually seperate process.
+Each worker blocks while waiting for messages, but does not block the main
+application because:
+- Each worker is independent
+- The process model allows concurrency without `asyncio`
 
+Benefit of asyncio is minimal here, because each worker is already `parallel` due to multiple 
+processes.
+So here using blocking pika is fine, `aio-pika` is not necessary.
+
+But when beneficial:
+
+If your service is both producing and consuming messages AND also doing other tasks in the same process (e.g., an API server), async is valuable.
+Example:
+1. FastAPI service receives `HTTP requests ---> publishes to RabbitMQ ----> also needs to serve hundreds of other requests concurrently`.
+2. Using blocking pika would freeze the event loop, slowing down other requests.
+3. `aio-pika` lets the service publish/consume messages asynchronously without blocking HTTP request handling.
+
+In classic distributed task queues, using pika vs aio-pika doesn’t matter much, because each worker is isolated.
+aio-pika shines when you combine message handling with other async workloads in the same process.
