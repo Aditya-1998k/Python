@@ -33,7 +33,7 @@ This repository covers essential concepts in **Distributed Systems & Cloud** wit
 
 ---
 
-## **Common Interview Questions**
+## **Common Questions**
 
 ### Celery / RQ
 - What is a message broker and why is it needed?
