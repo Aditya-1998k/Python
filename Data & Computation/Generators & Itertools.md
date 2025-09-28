@@ -91,7 +91,6 @@ print(next(gen))  # 3
 - Turns the function into a generator.
 - Doesn’t end immediately — it pauses and can resume later.
 - Produces values one by one (lazy evaluation).
-
 - return → one-shot value, function ends.
 - yield → produces a sequence lazily, function state is saved between calls.
 
