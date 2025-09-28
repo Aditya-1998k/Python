@@ -39,6 +39,11 @@ Note: aio-pika version is built on top of pika (asynio version)
 2. Designed for event-driven microservices where you want concurrency without threads.
 3. Uses `await / async` with.
 
+Run rabbitmq:
+```shell
+docker run -it --rm -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+```
+
 **sends.py**
 ```python
 import asyncio
@@ -46,7 +51,7 @@ import aio_pika
 
 async def main():
     connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
-    channel = await connnection.channel()
+    channel = await connection.channel()
 
     queue = await channel.declare_queue("my_queue", durable=True)
 
@@ -67,7 +72,7 @@ asyncio.run(main())
 import asyncio
 import aio_pika
 
-asyncio def main():
+async def main():
     connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
     channel = await connection.channel()
 
@@ -80,3 +85,11 @@ asyncio def main():
 
 asyncio.run(main())
 ```
+
+Output:
+```
+🕒 13:18 ➜  python consume.py 
+Recieved: Hello Async World!
+```
+
+
