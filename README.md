@@ -1,4 +1,6 @@
-# 🚀 Advanced Python Concepts
+# 🚀 Advanced Python
+This repository is having various advance concept in python. Revising and revisiting the same will help you to understand it better.
+
 
 ## 🔹 Concurrency & Parallelism
 - **Threading** – Lightweight execution, good for I/O-bound tasks.
@@ -66,16 +68,6 @@
 
 ---
 
-## 🔹 CI/CD & Automation
-- **Jenkins with Python** – Automating jobs via Python scripts.
-- **GitLab CI/CD with Python** – Pipelines with `.gitlab-ci.yml`.
-- **GitHub Actions (Python workflows)** – Python-based build/test/deploy automation.
-- **Dagger (Python SDK)** – CI/CD pipelines as code in Python.
-- **Ansible** – Infrastructure automation with Python.
-- **Fabric / Invoke** – Automating deployments and tasks.
-- **Prefect / Airflow** – Workflow orchestration with Python.
-
----
 
 ## 🔹 Other Interesting Areas
 - **Design Patterns** – Singleton, Factory, Observer.
