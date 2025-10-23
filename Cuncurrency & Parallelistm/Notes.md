@@ -597,6 +597,9 @@ if __name__ == "__main__":
 ### Inter-Process Communication (IPC)
 Since each process have different memory, so sharing data between each other is difficult.
 We have several ways to do the inter process communication.
+- Using queue
+- Using Pipe
+- Using manager
 
 #### 1. Using `Queue`
 ```python
@@ -622,8 +625,8 @@ So the queue will eventually hold: 0, 1, 4, 9, 16 (order not guaranteed).
 ```
 Results: [0, 1, 4, 9, 16]
 ```
-Again if you try to do `q.get()`
-⚠️ At this point, the queue is empty!. 
+Again if you try to do `q.get()` 
+At this point, the queue is empty!. 
 `q.get()` will block forever, waiting for new data that never comes.
 So you should do same number of q.get() as number of q.put() done.
 
