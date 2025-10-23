@@ -13,13 +13,10 @@
 
 ---
 
-# 🧠 Overview
+## Overview
 Concurrency and parallelism are key for building **efficient, responsive, and scalable applications**.  
-This section covers Python’s built-in and third-party tools for handling **multiple tasks at once**, whether they are **I/O-bound** or **CPU-bound**.
-
----
-
-## 📂 Topics Covered
+This section covers Python’s built-in and third-party tools for handling **multiple tasks at once**, 
+whether they are **I/O-bound** or **CPU-bound**.
 
 1. **Threading** – Lightweight concurrency, best for I/O-bound tasks.
 2. **Multiprocessing** – Run tasks in separate processes, bypassing the GIL for CPU-bound workloads.
@@ -28,9 +25,8 @@ This section covers Python’s built-in and third-party tools for handling **mul
 5. **Asyncio** – Asynchronous programming with event loops, tasks, and coroutines.
 6. **Third-Party Tools** – Libraries like `gevent`, `trio`, and `concurrent.futures` extensions.
 
----
 
-## 🧑‍💻 Why Learn Concurrency & Parallelism?
+ Why Learn Concurrency & Parallelism?    
 
 - Write **non-blocking applications** (servers, scrapers, data pipelines).
 - Scale across **multiple cores** for CPU-heavy workloads.
@@ -38,18 +34,16 @@ This section covers Python’s built-in and third-party tools for handling **mul
 - Use the right model for **I/O vs CPU tasks**.
 - Master high-level abstractions like executors for simpler concurrency.
 
----
 
-# 🧵 Threading
-### What is Threading?
+## Threading
+What is Threading?    
 A thread is a light weight unit of execution inside a **process**. Thread shares
 same memory space (unlike processes).
 
 **Best for I/O Bound Task:**
 - Network Calls
 - File I/O
-- API Requests
-
+- API Requests    
 **Inefficient for CPU Bound Task** Because of Python GIL (Global interpreter Lock)
 
 Basic Example:
@@ -75,7 +69,7 @@ t.join()
 print("Main thraed finish")
 ```
 
-Note: t.join() tells the main program: "Wait until this thread finishes before continuing."
+Note: `t.join()` tells the main program: "Wait until this thread finishes before continuing."
 ```
 Execution flow:
 Thread A starting
@@ -84,8 +78,10 @@ Main thread is running...
 Thread A finished
 Main thread finished
 ```
-without t.join() the main thread does not wait for the worker thread. but it also doesn’t exit until non-daemon threads are done.
-```
+without `t.join()` the main thread does not wait for the worker thread.    
+but it also doesn’t exit until `non-daemon` threads are done.
+
+```bash
 Execution flow:
 Thread A starting
 Main thread running...
@@ -116,11 +112,11 @@ Output:
 Main finished
 Worker finished
 ```
-The program didn’t exit immediately — it waited 3 seconds for the worker thread.
+The program `didn’t exit` immediately — it waited `3 seconds` for the worker thread.
 
 2. **Daemon Thread**: 
-Background thread that kills automatically when main program exits. Program does not weight for
-daemon thread to finish. Useful for background task like logging, monitoring or cleanup that does not
+`Background thread` that `kills automatically` when main program exits. Program does not weight for    
+daemon thread to finish. Useful for background task like logging, monitoring or cleanup that does not    
 need to block program exits.
 
 ```python
@@ -140,13 +136,13 @@ Output:
 ```
 Main finished
 ```
-The worker never prints Worker finished — because the program ended before it could finish.
-
-Note: Think of non-daemon as “important work must finish” and daemon as “background helper, stop if main ends.”
+The worker never prints Worker finished — because the program ended before it could finish.        
+Note: Think of non-daemon as **important work must finish** and     
+daemon as **background helper, stop if main ends.**
 
 ---
 
-##### Running multiple Thread
+Running multiple Thread    
 ```python
 import threading
 import time
@@ -172,7 +168,7 @@ print("All threads finished")
 ---
 
 #### Thread Synchronization (Locks)
-When multiple threads shares the same data, use lock to prevent race conditions.
+When multiple threads shares the same data, use **lock** to prevent race conditions.
 
 Let's create a force race condition
 - We can release the GIL by using time.sleep() or C extensions
@@ -212,10 +208,9 @@ output: 1002
 
 Let's fix this problem using lock
 
-Why Lock?
-
-A Lock ensures that only one thread at a time can access a critical section (like modifying counter).
-So even if multiple threads run, the counter += 1 operation becomes atomic.
+Why Lock?    
+A Lock ensures that **only one thread at a time can access a critical section** (like modifying counter).
+So even if multiple threads run, the counter += 1 operation becomes **atomic**.
 
 ```python
 import threading
