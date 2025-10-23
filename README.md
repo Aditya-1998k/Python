@@ -1,8 +1,8 @@
-# 🚀 Advanced Python
+# Advanced Python
 This repository is having various advance concept in python. Revising and revisiting the same will help you to understand it better.
 
 
-## 🔹 Concurrency & Parallelism
+## [Concurrency & Parallelism](https://github.com/Aditya-1998k/Python/blob/main/Cuncurrency%20%26%20Parallelistm.md)
 - **Threading** – Lightweight execution, good for I/O-bound tasks.
 - **ThreadPoolExecutor** – Manages a pool of worker threads.
 - **Multiprocessing** – True parallelism using separate processes (bypasses GIL).
@@ -13,7 +13,7 @@ This repository is having various advance concept in python. Revising and revisi
 
 ---
 
-## 🔹 Networking & Communication
+## Networking & Communication
 - **Sockets (TCP/UDP)** – Low-level network communication.
 - **ZeroMQ / PyZMQ** – High-performance messaging.
 - **xmlRPC** - Heritage python native Remote procedure call
