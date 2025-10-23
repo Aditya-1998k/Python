@@ -876,7 +876,7 @@ Done (blocking)
 
 ---
 
-## 🧰 Third Party Tools
+## Third Party Tools
 #### Greenlets
 1. Third-party (pip install greenlet).
 2. Lightweight coroutines in same thread.
