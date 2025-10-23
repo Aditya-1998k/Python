@@ -743,8 +743,9 @@ World!
 Hello Outside coroutines
 ```
 Only say_hello is registered.
-At await asyncio.sleep(5), the event loop has nothing else scheduled, so it just idles.
-`Hello Outside coroutines` is outside the event loop, so it only runs after the loop finishes.
+At `await asyncio.sleep(5)`, the event loop has nothing else scheduled, so it just idles.
+
+**Note:** `Hello Outside coroutines` is outside the event loop, so it only runs after the loop finishes.
 
 #### Running Multiple Task (Using asyncio.gather)
 ```python
@@ -771,11 +772,13 @@ asyncio.run(main())
 
 Defines an async coroutine task.
 Each task simulates some I/O by sleeping for delay seconds.
-`await asyncio.sleep(delay)` does not block → it pauses this coroutine and allows other tasks to run on the event loop.
+`await asyncio.sleep(delay)` does not block. 
+It pauses this coroutine and allows other tasks to run on the event loop.
 
 `asyncio.gather()` runs all provided tasks concurrently.
 Each `task(...)` is a coroutine, and `gather` schedules them on the event loop.
-`await asyncio.gather(...)` waits until all tasks finish and returns a list of results in the same order as passed.
+`await asyncio.gather(...)` waits until all tasks finish
+and returns a list of results in the same order as passed.
 
 Output:
 ```
@@ -854,19 +857,16 @@ async def main():
     result = await asyncio.to_thread(blocking_task)
     print(result)
 ```
-`asyncio.to_thread(blocking_task)`
+**asyncio.to_thread(blocking_task)**
 1. Runs blocking_task in a separate thread, using the default thread pool.
 2. Returns an awaitable (a coroutine), so you can await it.
 3. While it runs, the event loop is free to handle other async tasks.
 
-`await asyncio.to_thread(...)`
+**await asyncio.to_thread(...)**
 1. Suspends main() until the blocking task finishes.
 2. Meanwhile, other coroutines (if any) can continue running.
 
-```python
-asyncio.run(main())
-```
-Starts the event loop and runs main.
+**asyncio.run(main())**: Starts the event loop and runs main.
 
 Output:
 ```
