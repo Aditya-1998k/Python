@@ -10,6 +10,7 @@
 5. [Multiprocessing](#multiprocessing)
 6. [Asyncio](#asyncio)
 7. [Third Party Tools](#third-party-tools)
+8. [Practice Questions](#practice-questions)
 
 ---
 
@@ -1002,5 +1003,30 @@ Results: (0, 1, 4, 9, 16, 25)
 2. `tasks` → holds the computation graph.
 3. `compute(*tasks)` → runs them in parallel using Dask’s scheduler.
 
+----
 
----
+## Practice Questions
+### Threading
+1. What is the Global Interpreter Lock (GIL), and how does it affect threading?
+2. Difference between threads and processes in Python?
+3. When is threading preferred over multiprocessing?
+
+### Multiprocessing
+4. How does multiprocessing bypass the GIL?
+5. How do you share data between processes?
+6. What are the drawbacks of multiprocessing (e.g., overhead, memory)?
+
+### Executors
+7. Difference between `ThreadPoolExecutor` and `ProcessPoolExecutor`?
+8. How do futures (`concurrent.futures.Future`) work?
+9. Example: Submitting tasks to a pool and collecting results.
+
+### Asyncio
+10. Difference between concurrency and parallelism?
+11. How does the asyncio event loop work?
+12. Compare asyncio coroutines with threading.
+
+### Third-Party Tools
+13. What is `gevent`, and how does it use greenlets?
+14. How does `trio` differ from asyncio?
+15. When would you choose a third-party async library over the standard library?
